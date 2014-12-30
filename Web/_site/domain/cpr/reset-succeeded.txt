@@ -1,0 +1,6 @@
+<div>
+  <b>Request Reset Succeeded</b><br/>
+  <p>A message has been sent to your registered email address containing a new password.</p>
+  <p>Use this new password to sign on and then change the password.</p>
+  <p>If you do not receive the email, please contact your administrator.</p>
+</div>

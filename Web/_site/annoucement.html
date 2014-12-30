@@ -1,0 +1,37 @@
+
+<link href="css/pages/global.css" rel="stylesheet" type="text/css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<link href='http://fonts.googleapis.com/css?family=IM+Fell+DW+Pica+SC' rel='stylesheet' type='text/css'>
+
+
+<div id="page">
+	<center><h2>Announcement</h2></center>
+	<ul id="ticker_02" class="ticker">
+		<li>
+			jqBarGraph is jQuery plugin that gives you freedom to easily display your data as graphs. There are three types of graphs: simple, multi and stacked.
+		</li>
+		<li>
+			Learn how to create image gallery in 4 lines of Jquery
+		</li>
+		<li>
+			jqFancyTransitions is easy-to-use jQuery plugin for displaying your photos as slideshow with fancy transition effects.
+		</li>
+		<li>
+			mooBarGraph is AJAX graph plugin for MooTools which support two types of graphs, simple bar and stacked bar graph.
+		</li>
+	</ul>
+</div>
+
+
+<script>
+
+	function tick2(){
+		$('#ticker_02 li:first').slideUp( function () { $(this).appendTo($('#ticker_02')).slideDown(); });
+	}
+	setInterval(function(){ tick2 () }, 3000);
+
+
+</script>
+
+</body>
+</html>

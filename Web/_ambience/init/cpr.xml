@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<dom:domain version="2" module="cpr-init"
+	xmlns:dom="http://www.elixirtech.com/Domain">
+
+	<dom:node name="module/repository/fs/CPR">
+		<dom:json>
+			{
+			"jsonClass": "RootFolderInfo", "name": "CPR",
+			"store": "cpr", "hidden": false, "searchable": true,
+			"acl": [{"by": "*", "write": false}],
+			"properties": {"needs-init-from": "CPR.tgz"}
+			}
+		</dom:json>
+	</dom:node>
+
+	<dom:node name="module/store">
+		<dom:node name="location">
+			<dom:node name="cpr">
+				<dom:json substitute="true">
+					{ "jsonClass": "FileStoreInfo", "name": "cpr", "path":
+					"${elixir.root}/data/dacapo/${domain}/repository-cpr",
+					"description": "Capris file store" }
+				</dom:json>
+			</dom:node>
+		</dom:node>
+	</dom:node>
+  
+	
+	<dom:node name="version/cpr-init">
+		<dom:node name="1.0.0" />
+	</dom:node>
+
+</dom:domain>	

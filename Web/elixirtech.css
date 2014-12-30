@@ -1,0 +1,27 @@
+# for sticky footer
+html,
+body {
+  height: 100%;
+  overflow-x: hidden;
+  /* The html and body elements cannot have any padding or margin. */
+}
+
+.top-container {
+  margin-top: 60px;
+}
+
+.copyright {
+  margin-top: 10px;
+}
+
+.currency {
+  text-align: right;
+}
+
+ul.spaced-items li {
+  padding-bottom: 10px;
+}
+
+ul.spaced-items .topic {
+  font-weight: bold;
+}

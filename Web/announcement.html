@@ -1,0 +1,24 @@
+---
+layout: default
+title: Report
+---
+{% javascript_asset_tag announcement %}
+    - /_assets/report.js.coffee
+    - /_assets/announcement.js.coffee
+    - /_assets/bootstrap-form.js.coffee
+{% endjavascript_asset_tag %}
+<!-- Main component for a primary marketing message or call to action -->
+
+<div class="container">   
+  <h2>Announcement</h2>  
+  <div id="sp-announcements-contents">
+  </div>
+</div>
+
+<script type="text/javascript">
+      $(document).ready(function() {
+        console.info("+++++++");
+        cp.announcements = new cp.Announcements()
+        //cp.horizontalBootstrapForm = new cp.HorizontalBootstrapForm();
+      });
+</script>

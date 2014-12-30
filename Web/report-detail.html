@@ -1,0 +1,51 @@
+---
+layout: default
+title: Reports
+---
+
+{% javascript_asset_tag report %}
+      - /_assets/report.js.coffee
+{% endjavascript_asset_tag %}
+<!-- Main component for a primary marketing message or call to action -->
+
+<div class="container content">
+        <div class="margin-bottom-10"></div>
+        <!-- Service Blocks -->
+        <div class="row margin-bottom-30">
+            <div id="areportdiv" class="col-md-4">
+            	<div class="servive-block servive-block-default">
+            	<a class="report" href="http://localhost:9080/cpr/adhoc/dashboard/TestAdd/demo/DemoCapris.dashboard?mode=display" target="_blank"><img data-toggle="tooltip" title="Report description" width="128px" height="128px" src="graphics/icon/info-report.png"></a>             
+                <p>Information Report on New Residents, New PRs and NCs for all Division</p>
+            	</div>
+         	</div>
+            <div id="breportdiv" class="col-md-4">
+            	<div class="servive-block servive-block-default">
+               <a class="report" href="http://localhost:9080/cpr/adhoc/dashboard/forcedirected/ForceDirectedDashboard.dashboard?mode=display" target="_blank"><img data-toggle="tooltip" title="Report description" width="128px" height="128px" src="graphics/icon/stat-report.png"></a>     
+                <p>GRLs (INCs) Statistics Report</p>
+            	</div>
+            </div>
+            <div id="creportdiv" class="col-md-4">
+            	<div class="servive-block servive-block-default">
+            	<a class="report" href="report.html"><img data-toggle="tooltip" title="Report description" width="128px" height="128px" src="graphics/icon/home-report.jpeg"></a>
+                <p>House Visit Report</p>
+            	</div>
+            </div>
+        </div>
+
+        <div class="row margin-bottom-30">
+            <div id="dreportdiv" class="col-md-4">
+            	<div class="servive-block servive-block-default">      
+            	<a class="report" href="report.html"><img data-toggle="tooltip" title="Report description" width="128px" height="128px" src="graphics/icon/kpi_report2.png"></a>           
+                <p>Report on SCEF KPI Achievement</p>
+            	</div>
+            </div>
+            <div id="ereportdiv" class="col-md-4">
+            	<div class="servive-block servive-block-default">
+            	<a class="report" href="report.html"><img data-toggle="tooltip" title="Report description" width="128px" height="128px" src="graphics/icon/letter-report.gif"></a>   
+                <p>Report on Welcome Letter Automated Update</p>
+            	</div>
+            </div>
+            <div class="col-md-4">   
+            </div>
+        </div>
+</div>

@@ -1,0 +1,8 @@
+name: ElixirTech
+markdown: redcarpet
+highlighter: null
+asset_pipeline:
+  bundle: true            # Default = true
+  compress: true          # Default = true
+  output_path: assets     # Default = assets
+  gzip: false             # Default = false

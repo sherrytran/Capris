@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.png">
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="unify/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="unify/Simple-Line-Icons/simple-line-icons.css">
+    
+   
+    <link rel="stylesheet" href="css/pages/page_log_reg_v2.css">  
+    <!-- CSS Theme -->    
+    <link rel="stylesheet" href="css/themes/default.css" id="style_color">
+
+    <title>Dashboard</title>
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+   
+              
+
+<!-- JS Implementing Plugins -->
+<script src="lib/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="lib/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="lib/underscore-1.5.1.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>         
+
+<!-- JS Page Level -->  
+    
+<script type="text/javascript" src="unify/app.js"></script>
+<script>
+  cp = {
+    credentials: ${credentials}
+  };
+</script>
+ <script src='/assets/login-69016aa3c0c606fff00fe0156f2cb4f0.js' type='text/javascript'></script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        App.init();  
+    });
+    
+</script>
+
+  </head>
+    <body>
+        <!-- Static navbar -->
+<div class="header">
+        <!-- Navbar -->
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-float">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="fa fa-bars"></span>
+                    </button>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-responsive-collapse">
+                    <ul class="nav navbar-nav">
+                        <!-- Product -->
+                        <li><a id="home" href="http://localhost:9080/elx/do/cpr/adhoc/dashboard/TestAdd/testdash.dashboard?mode=display">
+                                <i class="fa fa-home"></i>
+                                Home
+                            </a></i></li>
+                        <li  class="dropdown" >
+                            
+                            <a id="myreport" href="" class="dropdown-toggle">
+                                <i class="fa fa-bar-chart-o"></i>
+                                Reports
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li id="areport"><a class="report" target="_blank" href="report.html">Information Report on New Residents, New PRs and NCs for all Division</a></li>
+                                <li id="breport"><a class="report" target="_blank" href="report.html">Statistic Report on New Residents, New PRs and NCs for all Division</a></li>
+                                <li id="creport"><a class="report" target="_blank" href="report.html">House Visit Report</a></li>
+                                <li id="dreport"><a class="report" target="_blank" href="report.html">Report on SCEF KPI Achievement</a></li>
+                                <li id="ereport"><a class="report" target="_blank" href="report.html">Report on Welcome Letter Automated Update</a></li>
+                            </ul>
+                        </li>
+                        <!-- End Product -->
+                        <!-- Partners -->
+                        <li id="log"  class="dropdown" >
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-gear"></i>
+                                Administrator
+                            </a>
+                            <ul class="dropdown-menu">
+                              <li><a target="_blank" href="#">View Logs</a></li>
+                              <li><a target="_blank" href="#">Unlock Functions</a></li>
+                              <li><a target="_blank" href="#">User Management</a></li>
+                              <li><a target="_blank" href="#">Annoucement</a></li>
+                            </ul>
+                        </li>
+                        <!-- End Partners -->
+                        <li>
+                            <input style="margin-top:7px" type="text">
+                        </li>
+                        <!-- Search Block -->
+                        <li>
+                            <i class="search fa fa-search search-btn"></i>
+                            <div class="search-open">
+                                <div class="input-group animated fadeInDown">
+                                    <input type="text" class="form-control" placeholder="Search">
+                                    <span class="input-group-btn">
+                                        <button class="btn-u" type="button">Go</button>
+                                    </span>
+                                </div>
+                            </div>    
+                        </li>
+                        <!-- End Search Block -->
+                    </ul>
+                    <ul class="nav navbar-nav pull-right">
+                        <li>
+
+                            <a id="user" href="#"> 
+                            </a>
+                        </li>
+                        <li><a id="logout" href="/elx/go/cpr">
+                            <i class="fa fa-sign-out"></i>
+                            Logout</a></li> 
+                    </ul>
+                </div><!--/navbar-collapse-->
+            </div>    
+        </div>
+    <form id="logoff-form" style="display:none;" method="POST" action="/elx/go/cpr">
+    </form>           
+        <!-- End Navbar -->
+</div>
+
+<!-- Main component for a primary marketing message or call to action -->
+<iframe width="1340px" height="1320px" src="http://localhost:8080/elx/do/eno/adhoc/dashboard/TestAdd/testdash.dashboard?mode=display" ></iframe>
+
+        
+      <!--/div-->
+
+       <!-- JS Global Compulsory -->  
+      
+    </body>
+</html>

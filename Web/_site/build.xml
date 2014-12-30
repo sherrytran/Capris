@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+
+<project name="CaprisWeb" default="build" xmlns:alex="com.elixirtech.alex2.ant">
+
+	<property name="elx.version" value="3.6.0"/>
+	<property file="${user.home}/build/V3.properties" />
+	<property name="root" value="${user.home}/Code/Bravura" />
+	<property file="${root}/Build/Ambience.properties" />
+	<property name="web.tgz" value="bizinsights-web-${elx.version}.tgz" />
+	<property name="ambience.zip" value="${user.home}/Test/elx-ambience-${elx.version}.zip" />
+	<property name="output.dir" value="${user.home}/Test/Capris" />
+
+	<import file="${root}/Build/ant/common.build.xml" />
+	<import file="${root}/Build/ant/git-info.build.xml" />
+
+	<target name="init">
+		<available file="${user.home}/Test/JDBC" property="jdbc.present" />
+		<available file="${user.home}/Test/default-licence.txt" property="lic.present" />
+	</target>
+
+	<target name="build">
+		<exec executable="jekyll">
+			<arg line="build" />
+		</exec>
+	</target>
+
+	<target name="unzip-ambience">
+		<delete dir="${user.home}/Test/tmp" />
+		<mkdir dir="${user.home}/Test/tmp" />
+		<delete dir="${output.dir}" />
+		<unzip dest="${user.home}/Test/tmp" src="${ambience.zip}" overwrite="true" />
+		<move file="${user.home}/Test/tmp/ElixirAmbience" tofile="${output.dir}" />
+	</target>
+
+	<target name="jdbc-deploy" if="jdbc.present">
+		<copy todir="${output.dir}/lib">
+			<fileset dir="${user.home}/Test/JDBC">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="resolve-biz-jars">
+		<alex:get dir="${output.dir}/lib">
+			<alex:dependency name="biz-service-${elx.version}.jar" />
+      <alex:dependency name="squeryl_2.10-0.9.5-6.jar" />
+      <alex:dependency name="cglib-nodep-2.2.3.jar" />
+		</alex:get>
+	</target>
+
+	<target name="lic-deploy" if="lic.present">
+		<copy todir="${output.dir}/init" file="${user.home}/Test/default-licence.txt" overwrite="true" />
+	</target>
+
+	<target name="web-deploy" depends="init,build">
+		<copy todir="${output.dir}/web/elx" overwrite="true">
+			<fileset dir="_site">
+				<exclude name="build.xml" />
+				<exclude name="tmp" />
+				<exclude name="dist" />
+			</fileset>
+		</copy>
+		<move file="${output.dir}/web/elx/assets" tofile="${output.dir}/web/assets" />
+
+	</target>
+
+	<target name="deploy" depends="init,build,unzip-ambience,jdbc-deploy,lic-deploy">
+		<copy todir="${output.dir}/web/elx" overwrite="true">
+			<fileset dir="_site">
+				<exclude name="build.xml" />
+				<exclude name="tmp" />
+				<exclude name="dist" />
+			</fileset>
+		</copy>
+		<copy todir="${output.dir}" overwrite="true">
+			<fileset dir="_ambience" />
+		</copy>
+		<move file="${output.dir}/web/elx/assets" tofile="${output.dir}/web/assets" />
+		<replace file="${output.dir}/etc/application.conf" token="&quot;eno&quot;" value="&quot;cpr&quot;" />
+		<replace file="${output.dir}/etc/application.conf" token="port = 2552" value="port = 3552" />
+		<replace file="${output.dir}/jetty/etc/jetty-http.xml" token="8080" value="9080" />
+		<replace file="${output.dir}/jetty/etc/jetty-https.xml" token="8443" value="9443" />
+		<replace file="${output.dir}/jetty/etc/jetty.xml" token="8443" value="9443" />
+		<chmod file="${output.dir}/bin/run-server.sh" perm="+x" />
+
+		<!-- prepare the /BZN filesystem for init on first run -->
+		<!--tar basedir="../BZN" compression="gzip" destfile="${output.dir}/init/repository/BZN.tgz" /-->
+
+		<!-- make landing page return to index.html -->
+		<replace file="${output.dir}/init/core.xml" token="&quot;/po/index.html&quot;" value="&quot;/index.html&quot;" />
+
+		<!-- do not install ElixirSamples -->
+		<!--delete file="${output.dir}/init/samples.xml" />
+		<delete file="${output.dir}/init/repository/ElixirSamples.tgz" /-->
+
+	</target>
+
+	<target name="publish" depends="build">
+		<delete dir="dist" />
+		<mkdir dir="dist" />
+		<delete dir="tmp" />
+		<mkdir dir="tmp" />
+		<alex:get dir="tmp/lib">
+			<alex:dependency name="biz-service-${elx.version}.jar" />
+		</alex:get>
+		<move file="_site" tofile="tmp/web/elx" />
+		<copy todir="tmp" overwrite="true">
+			<fileset dir="_ambience" />
+		</copy>
+		<move file="tmp/web/elx/assets" tofile="tmp/web/assets" />
+		<delete file="tmp/web/elx/build.xml" />
+		<delete dir="tmp/web/elx/dist" />
+		<delete dir="tmp/web/elx/tmp" />
+		<tar basedir="../BZN" compression="gzip" destfile="tmp/init/repository/BZN.tgz" />
+		<tar basedir="tmp" compression="gzip" destfile="dist/${web.tgz}" />
+		<alex:put file="dist/${web.tgz}" />
+	</target>
+</project>
+

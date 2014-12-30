@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure_9_0.dtd">
+
+<!-- =============================================================== -->
+<!-- Mixin the RewriteHandler -->
+<!-- =============================================================== -->
+
+
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+
+  <!-- =========================================================== -->
+  <!-- configure rewrite handler -->
+  <!-- =========================================================== -->
+  <Get id="oldhandler" name="handler" />
+
+  <Set name="handler">
+    <New id="Rewrite" class="org.eclipse.jetty.rewrite.handler.RewriteHandler">
+      <Set name="handler">
+        <Ref refid="oldhandler" />
+      </Set>
+      <Set name="rewriteRequestURI">
+        <Property name="rewrite.rewriteRequestURI" default="true" />
+      </Set>
+      <Set name="rewritePathInfo">
+        <Property name="rewrite.rewritePathInfo" default="true" />
+      </Set>
+      <Set name="originalPathAttribute">
+        <Property name="rewrite.originalPathAttribute" default="requestedPath" />
+      </Set>
+    </New>
+  </Set>
+
+  <Ref refid="Rewrite">
+
+    <!-- ensure base url is /elx/ or /assets/ -->
+    <Call name="addRule">
+      <Arg>
+        <New class="org.eclipse.jetty.rewrite.handler.RedirectRegexRule">
+          <Set name="regex">(^(?!/elx/|/assets/|/cpr/).*)</Set>
+          <Set name="replacement">/cpr/index.html</Set>
+        </New>
+      </Arg>
+    </Call>
+
+    <!-- ensure landing page is mapped to /cpr/index.html -->
+    <Call name="addRule">
+      <Arg>
+        <New class="org.eclipse.jetty.rewrite.handler.RedirectRegexRule">
+          <Set name="regex">^/elx/do/cpr/([^/]*\.html)$</Set>
+          <Set name="replacement">/cpr/$1</Set>
+        </New>
+      </Arg>
+    </Call>
+
+    <!-- ensure any /elx/XXX.html is /cpr/XXX.html -->
+    <Call name="addRule">
+      <Arg>
+        <New class="org.eclipse.jetty.rewrite.handler.RedirectRegexRule">
+          <Set name="regex">^/elx/([^/]*\.html)$</Set>
+          <Set name="replacement">/cpr/$1</Set>
+        </New>
+      </Arg>
+    </Call>
+
+    <!-- rewrite /cpr/ to /elx/do/cpr/ -->
+    <Call name="addRule">
+      <Arg>
+        <New class="org.eclipse.jetty.rewrite.handler.RewriteRegexRule">
+          <Set name="regex">^/cpr/(.*)$</Set>
+          <Set name="replacement">/elx/do/cpr/$1</Set>
+        </New>
+      </Arg>
+    </Call>
+    
+  </Ref>
+
+</Configure>

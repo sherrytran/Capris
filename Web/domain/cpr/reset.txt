@@ -1,0 +1,15 @@
+BizInsights Password Reset
+---
+A password reset request has been received for BizInsights.
+
+The new password for ${username} is now:
+
+${newpass}
+
+If you did not request for this reset, please contact info@bizinsights.net with the following information:
+
+${requestInfo}
+
+Sincerely,
+BizInsights Customer Service
+https://www.bizinsights.net/

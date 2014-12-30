@@ -1,0 +1,16 @@
+Welcome to BizInsights
+---
+Thank you for registering with BizInsights! Please find below your login information:
+
+User ID: ${username}
+Password: ${newpass}
+
+For security, you are advised to login to BizInsights and then to change to your preferred password.
+
+If you did not request this login information, please contact info@bizinsights.net with the following information:
+
+${requestInfo}
+
+Sincerely, 
+BizInsights Customer Service 
+https://www.bizinsights.net/

@@ -1,0 +1,6 @@
+<div>
+  <b>Request Reset Failed</b><br/>
+  <p>Either your user name is not known in this domain, or you have no email address 
+  registered for sending of a new password.</p>
+  <p>Please contact your administrator.</p>
+</div>

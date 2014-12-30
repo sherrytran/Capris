@@ -1,0 +1,9 @@
+name: Capris
+markdown: redcarpet
+highlighter: null
+encoding: UTF-8         # Default = ASCII-8BIT 
+asset_pipeline:
+  bundle: true            # Default = true
+  compress: true          # Default = true
+  output_path: assets     # Default = assets
+  gzip: false             # Default = false

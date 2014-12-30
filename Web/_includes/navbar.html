@@ -1,0 +1,84 @@
+<!-- Static navbar -->
+<div class="header">
+        <!-- Navbar -->
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-float">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="fa fa-bars"></span>
+                    </button>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-responsive-collapse">
+                    <ul class="nav navbar-nav">
+                        <!-- Product -->
+                        <li><a id="home" href="http://localhost:9080/elx/do/cpr/adhoc/dashboard/TestAdd/testdash.dashboard?mode=display">
+                                <i class="fa fa-home"></i>
+                                Home
+                            </a></i></li>
+                        <li {% if include.menuchoice == 'product' %} class="dropdown active" {% else %} class="dropdown" {% endif %}>
+                            
+                            <a id="myreport" href="" class="dropdown-toggle">
+                                <i class="fa fa-bar-chart-o"></i>
+                                Reports
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li id="areport"><a class="report" target="_blank" href="report.html">Information Report on New Residents, New PRs and NCs for all Division</a></li>
+                                <li id="breport"><a class="report" target="_blank" href="report.html">Statistic Report on New Residents, New PRs and NCs for all Division</a></li>
+                                <li id="creport"><a class="report" target="_blank" href="report.html">House Visit Report</a></li>
+                                <li id="dreport"><a class="report" target="_blank" href="report.html">Report on SCEF KPI Achievement</a></li>
+                                <li id="ereport"><a class="report" target="_blank" href="report.html">Report on Welcome Letter Automated Update</a></li>
+                            </ul>
+                        </li>
+                        <!-- End Product -->
+                        <!-- Partners -->
+                        <li id="log" {% if include.menuchoice == 'partners' %} class="dropdown active" {% else %} class="dropdown" {% endif %}>
+                            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-gear"></i>
+                                Administrator
+                            </a>
+                            <ul class="dropdown-menu">
+                              <li><a target="_blank" href="#">View Logs</a></li>
+                              <li><a target="_blank" href="#">Unlock Functions</a></li>
+                              <li><a target="_blank" href="#">User Management</a></li>
+                              <li><a target="_blank" href="#">Annoucement</a></li>
+                            </ul>
+                        </li>
+                        <!-- End Partners -->
+                        <li>
+                            <input style="margin-top:7px" type="text">
+                        </li>
+                        <!-- Search Block -->
+                        <li>
+                            <i class="search fa fa-search search-btn"></i>
+                            <div class="search-open">
+                                <div class="input-group animated fadeInDown">
+                                    <input type="text" class="form-control" placeholder="Search">
+                                    <span class="input-group-btn">
+                                        <button class="btn-u" type="button">Go</button>
+                                    </span>
+                                </div>
+                            </div>    
+                        </li>
+                        <!-- End Search Block -->
+                    </ul>
+                    <ul class="nav navbar-nav pull-right">
+                        <li>
+
+                            <a id="user" href="#"> 
+                            </a>
+                        </li>
+                        <li><a id="logout" href="/elx/go/cpr">
+                            <i class="fa fa-sign-out"></i>
+                            Logout</a></li> 
+                    </ul>
+                </div><!--/navbar-collapse-->
+            </div>    
+        </div>
+    <form id="logoff-form" style="display:none;" method="POST" action="/elx/go/cpr">
+    </form>           
+        <!-- End Navbar -->
+</div>
