@@ -43,7 +43,7 @@ object HouseVisit extends LoggingHelper2 {
           ps.setString(1,accountId)
           ps.setString(2,userId)
           ps.setString(3,otp)
-         
+          ps.executeUpdate()
           log.debug(s"Inserting $accountId,$userId,$otp")
           
         

@@ -37,7 +37,7 @@
       <Arg>
         <New class="org.eclipse.jetty.rewrite.handler.RedirectRegexRule">
           <Set name="regex">(^(?!/elx/|/assets/|/cpr/).*)</Set>
-          <Set name="replacement">/cpr/index.html</Set>
+          <Set name="replacement">/elx/id/cpr</Set>
         </New>
       </Arg>
     </Call>

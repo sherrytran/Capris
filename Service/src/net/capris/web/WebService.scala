@@ -20,7 +20,7 @@ object WebService {
   }
 }
 
-abstract class WebService  extends Actor
+abstract class WebService extends Actor
   with AsyncService
   with AsyncStepMethodHandler
   with ShutdownHandler

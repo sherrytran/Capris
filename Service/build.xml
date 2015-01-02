@@ -15,35 +15,7 @@
 	<property name="src.dir" value="src" />
 	<property name="test.dir" value="test" />
 
-	<target name="put">
-		<alex:put file="lib_managed/c3p0-0.9.2.1.jar"/>
-		<alex:put file="lib_managed/mchange-commons-java-0.2.3.4.jar"/>
-	</target>
-
-	<target name="resolve" depends="common">
-		<alex:get dir="lib_managed" sync="true">
-			<alex:dependency refid="core-jars"/>
-			<alex:dependency refid="c3p0-jars"/>
-			<alex:dependency refid="aws-jars"/>
-			<alex:dependency refid="http-jars"/>
-			<alex:dependency name="commons-codec-1.7.jar" />
-			<alex:dependency name="commons-logging-1.1.1.jar" />
-			<alex:dependency name="elx-jdom-${elx.version}.jar" />
-			<alex:dependency name="elx-json-${elx.version}.jar" />
-			<alex:dependency name="elx-arch-${elx.version}.jar" />
-			<alex:dependency name="elx-aws-${elx.version}.jar" />
-			<alex:dependency name="elx-webapps-${elx.version}.jar" />
-			<alex:dependency name="elx-arch-framework-${elx.version}.jar" />
-			<alex:dependency name="logback-core-1.0.13.jar" />
-			<alex:dependency name="logback-classic-1.0.13.jar" />
-			<!-- Database -->
-			<alex:dependency name="ojdbc6_11.2.0.4.jar" />
-			<alex:dependency name="squeryl_2.10-0.9.5-6.jar" />
-			<alex:dependency name="cglib-nodep-2.2.3.jar" />
-		</alex:get>
-	</target>
-
-	<target name="build" depends="resolve,git-info">
+	<target name="build" depends="git-info">
 		<delete dir="build" />
 		<mkdir dir="build" />
 		<delete dir="dist" />
@@ -58,7 +30,6 @@
 				<patternset refid="extras"/>
 			</fileset>
 		</copy>
-		<alex:build-number name="${jar.name}" />
 		<jar destfile="dist/${jar.name}" basedir="build">
 			<manifest>
 				<attribute name="Alexandria-Build" value="${build.number}" />
