@@ -1,3 +1,11 @@
+cp.buildSafeUrl = (path,query)->
+  sb = "/cpr"
+  parts = path.split("/")
+  for part in parts
+    if (part.length>0)
+      sb += ("/" + encodeURIComponent(part))
+  sb + (query || "")
+
 class Announcements
   constructor: () ->
    	cred=cp.credentials
@@ -15,9 +23,29 @@ class Announcements
     footerForm = new cp.HorizontalBootstrapForm(@contents)
     save = footerForm.buttonRow("Save Changes")
     @infoSpan = $("<span style='margin-left: 10px;'></span>").insertAfter(save)
-    #save.click(@onSave)
+    save.click(@test)
     data=[{"title":"BizInsights Maintenance 22/8","line1":"Update will start from 6:45pm to"},{"title":"Credit Card Maintenance","line1":"Credit Card facilities "},{"title":"BizInsights Maintenance 29/7","line1":"Update will start from 6:30pm to"},{"title":"BizInsights is now Live!","line1":"Please log in with your new"}]
     @buildAnnouncements(data)
+
+  test: ()=>
+    @onSave(@result)
+
+  onSave: (andThen)->
+    console.info("click click")
+    postURL = cp.buildSafeUrl("/adhoc/web/generate-otp/1234567")
+    $.ajax({
+      type: 'post'
+      url: postURL
+      success: andThen
+      error: (jqXHR, textStatus, errorThrown) =>
+        console.info(textStatus)
+        #if jqXHR.status == 400
+
+    })
+
+  result: ()=>
+    console.info("done")
+
 
   buildAnnouncements: (as)->
     @announcements = []
@@ -25,7 +53,7 @@ class Announcements
       model = @buildModel(a)
       @announcements.push(model)
     #@updateEnabled()
-    
+
 
   buildModel: (a)->
     model = {data: a}
@@ -42,7 +70,9 @@ class Announcements
     model.up.click(model,@onUp)
     model.down.click(model,@onDown)
     model.delete.click(model,@onDelete)
-    model 	
+    model
+
+
 
 
 cp.Announcements=Announcements
