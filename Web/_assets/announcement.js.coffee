@@ -32,14 +32,16 @@ class Announcements
 
   onSave: (andThen)->
     console.info("click click")
-    postURL = cp.buildSafeUrl("/adhoc/web/generate-otp/1234567")
+    postURL = cp.buildSafeUrl("/adhoc/web/update-hv/1234567")
     $.ajax({
       type: 'post'
       url: postURL
       success: andThen
       error: (jqXHR, textStatus, errorThrown) =>
         console.info(textStatus)
-        #if jqXHR.status == 400
+        console.info(jqXHR)
+        console.info(errorThrown)
+
 
     })
 

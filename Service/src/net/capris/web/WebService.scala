@@ -20,7 +20,7 @@ object WebService {
   }
 }
 
-abstract class WebService extends Actor
+class WebService extends Actor
   with AsyncService
   with AsyncStepMethodHandler
   with ShutdownHandler
@@ -29,6 +29,8 @@ abstract class WebService extends Actor
   import WebService._
   import VivaceSettings._
     
+  implicit val exeCxt = context.dispatcher
+  
   get("/announcements") {
     (announcements ? Announcements.GetAnnouncements).map(JSONResponse(_)).recover {
       case ex : Exception =>
@@ -49,9 +51,9 @@ abstract class WebService extends Actor
     }
   }
   
-  post("/generate-otp/:accountId") {
+  post("/update-hv/:accountId") {
     val accountId = params(":accountId")
-    HouseVisit.generateFor(accountId) match {
+    HouseVisit.updateFor(accountId) match {
       case LogMessage.None => future(OkResponse)
       case msg : LogMessage => future(ErrorResponse(400,msg.msg))
     }

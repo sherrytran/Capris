@@ -52,7 +52,7 @@ object CaprisDB extends Schema with LoggingHelper2 {
   def init(config: Config) : String = {
     if (pool.compareAndSet(None,Some(new C3POPool(getPoolConfig(config))))) {
       initConfig.set(Some(config))
-      //testPool()
+      testPool()
       "Using " + config.getString("url")
     }
     else {
@@ -61,6 +61,33 @@ object CaprisDB extends Schema with LoggingHelper2 {
   }
 
 
+  def testPool() {
+    ARM.run { arm =>
+      try {
+        val connection = arm.manage(getConnection)
+        val session = Session.create(connection, new OracleAdapter)
+        using(session) {
+          try {
+            log.info("Testing if DB is initialised")
+            log.info("Using " + initConfig.get.map(_.getString("url")))
+            //val codes = from(bznAccounts)(code => select(code)).toList
+            isInitialized.set(true)
+            log.debug("DB connection ok")
+          } catch {
+            case ex: Exception =>
+              log.error(ex.getMessage(), ex)
+              log.info("=========================================")
+              isInitialized.set(false)
+          }
+        }
+      } catch {
+        case ex: Exception =>
+          log.error(ex.getMessage(), ex)
+          isInitialized.set(false)
+      }
+    }
+    SessionFactory.concreteFactory = Some(() => Session.create(getConnection, new OracleAdapter))
+  }
 
   private def getPoolConfig(config: Config): ConnectionPoolConfig = {
     val driver = config.getString("driver")
