@@ -31,11 +31,14 @@ class Announcements
     @onSave(@result)
 
   onSave: (andThen)->
+    refundStore = {"items":[{"nric":"S8855563E","name":"Sherry","citizentype":"PR", "title":"ASDFG","date":"ASDFG","startTime":"ASDFG","endTime":"ASDFG","desc":"ASDFG"}]}
     console.info("click click")
-    postURL = cp.buildSafeUrl("/adhoc/web/update-hv/1234567")
+    postURL = cp.buildSafeUrl("/adhoc/web/housevisit/update")
     $.ajax({
       type: 'post'
       url: postURL
+      contentType: 'application/json'
+      data: JSON.stringify(refundStore)
       success: andThen
       error: (jqXHR, textStatus, errorThrown) =>
         console.info(textStatus)
