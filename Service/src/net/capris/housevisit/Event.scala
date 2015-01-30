@@ -29,7 +29,7 @@ def insertEvent(conn : Connection, s : EventItem) {
 
 def insertStatus(conn : Connection, s : EventStatusItem) {
 	    ARM.run { arm =>
-	      val cols = EventColumns.map(_.name)
+	      val cols = EventStatusColumns.map(_.name)
 	      val attrs = cols.mkString(",")
 	      val q = cols.map(_=>"?").mkString(",")
 	      val sql = s"INSERT INTO house_visit ($attrs) VALUES($q);"
@@ -51,64 +51,64 @@ val EventStatusColumns = Array[Column](
     )
     
 val EventColumns = Array[Column](
-    RWColumn("PersonIDNo", DataType.String, 10),
     RWColumn("EventTitle", DataType.String, 45),
     RWColumn("EventDate", DataType.String, 45),
     RWColumn("StartTime", DataType.String, 45),
     RWColumn("EndTime", DataType.String, 45),
     RWColumn("Description", DataType.String, 45),
-    RWColumn("KeyEvent", DataType.Integer, 100))
+    RWColumn("KeyEvent", DataType.String, 45),
+    RWColumn("CgdId", DataType.String, 45)
+    
+    )
    
 
 def prepareNewEvent(ps: PSWrapper, s: EventItem) {
     val cols = EventColumns
-    val eventkey = java.lang.System.currentTimeMillis()
-    ps.setString(Column.constrain(cols(0),s.nric))
-    ps.setString(Column.constrain(cols(1),s.title))
-    ps.setString(Column.constrain(cols(2),s.date))
-    ps.setString(Column.constrain(cols(3),s.startTime))
-    ps.setString(Column.constrain(cols(4),s.endTime))
-    ps.setString(Column.constrain(cols(5),s.desc))
-    ps.setLong(Math.abs(eventkey.toInt))
+    ps.setString(Column.constrain(cols(0),s.title))
+    ps.setString(Column.constrain(cols(1),s.date))
+    ps.setString(Column.constrain(cols(2),s.startTime))
+    ps.setString(Column.constrain(cols(3),s.endTime))
+    ps.setString(Column.constrain(cols(4),s.desc))
+    ps.setString(Column.constrain(cols(5),s.eventKey))
+    ps.setString(Column.constrain(cols(6),s.cgdId))
+   
    
   }
 
  def prepareEventStatus(ps: PSWrapper, s: EventStatusItem) {
     val cols = EventStatusColumns
-    val eventkey = java.lang.System.currentTimeMillis()
     ps.setString(Column.constrain(cols(0),s.nric))
     ps.setString(Column.constrain(cols(1),s.name))
     ps.setString(Column.constrain(cols(2),s.dateofbirth))
     ps.setString(Column.constrain(cols(3),s.citizentype))
     ps.setString(Column.constrain(cols(4),s.status))
     ps.setString(Column.constrain(cols(5),s.remarks))
-    ps.setLong(Math.abs(eventkey.toInt))
+    ps.setString(Column.constrain(cols(6),s.eventKey))
    
   }
  
   def buildEvent(rs: RSWrapper): EventItem = {
     rs.next
-    EventItem(rs.getString,rs.getString, rs.getString, rs.getString, rs.getString, rs.getString)
+    EventItem(rs.getString, rs.getString, rs.getString, rs.getString, rs.getString,rs.getString,rs.getString)
   }
 
   
   case class EventItem(
-	nric: String,
+	
     title: String,
     date: String,
     startTime: String,
     endTime: String,
-    desc: String)
+    desc: String,
+    eventKey:String,
+   cgdId:String)
     
   case class EventStatusItem(
 	nric: String,
     name: String,
     dateofbirth: String,
-   citizentype: String,
+    citizentype: String,
     status: String,
-    remarks: String)
-
-
-
-
+    remarks: String,
+    eventKey:String)
 }

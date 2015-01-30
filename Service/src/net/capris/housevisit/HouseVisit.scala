@@ -43,8 +43,9 @@ object HouseVisit extends LoggingHelper2 {
       val conn = arm.manage(CaprisDB.getConnection)
       conn.setAutoCommit(false)
       try {
-        val event = list.items
+        val event = list.items.groupBy(_.title)
         event.map(handleEventDetails(conn))
+        //key1 = Math.abs(random.toInt).toString
         conn.commit
         LogMessage.None
       } catch {
@@ -55,18 +56,23 @@ object HouseVisit extends LoggingHelper2 {
     }
   }
   
-   def handleEventDetails(conn: Connection)(item: Model.EventItem): LogMessage = {
-    var eventItem = Event.EventItem(item.nric,item.title,item.date,item.startTime,item.endTime,item.desc)
+   def handleEventDetails(conn: Connection)(s: (String, List[Model.EventItem])): LogMessage = {
+    var (eventKey,items) = s
+    val random=java.lang.System.currentTimeMillis()
+    var key2 = Math.abs(random.toInt).toString
+    var eventItem = new Event.EventItem("","","","","","","")
+    eventKey = key2
+    items.map{i=> eventItem = Event.EventItem(i.title,i.date,i.startTime,i.endTime,i.desc,eventKey,i.cgdId)
+    }
+    println(eventItem)
     Event.insertEvent(conn, eventItem)
+    items.map{i=>var eventStatusItem = Event.EventStatusItem(i.nric,i.name,i.dateOfBirth,i.citizentype,i.hv_status,i.Remarks,eventKey)
+    Event.insertStatus(conn, eventStatusItem)
+    }
     LogMessage.None
 
   }
    
-   def handleEventStatusDetails(conn: Connection)(status: Model.EventStatus): LogMessage = {
-    var eventStatus = Event.EventStatusItem(status.nric,status.name,status.dateOfBirth,status.citizentype,status.hv_status,status.Remarks)
-    Event.insertStatus(conn, eventStatus)
-    LogMessage.None
-
-  }
+   
   
 }

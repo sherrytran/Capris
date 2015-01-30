@@ -31,7 +31,7 @@ class Announcements
     @onSave(@result)
 
   onSave: (andThen)->
-    refundStore = {"eventKey":"","items":[{"nric":"S8855563E","name":"Sherry","citizentype":"PR", "title":"1","date":"2","startTime":"3","endTime":"4","desc":"5","cgdId":"6","name":"Sherry","dateOfBirth":"10","citizentype":"11","hv_status":"12","Remarks":"13"}]}
+    refundStore = {"items":[{"nric":"S8855563E","name":"Sherry","citizentype":"PR", "title":"1","date":"2","startTime":"3","endTime":"4","desc":"5"}],"eventKey":""}
     console.info("click click")
     postURL = cp.buildSafeUrl("/adhoc/web/housevisit/update")
     $.ajax({

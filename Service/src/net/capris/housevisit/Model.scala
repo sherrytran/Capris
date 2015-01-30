@@ -23,7 +23,15 @@ object Model {
     date: String,
     startTime: String,
     endTime: String,
-    desc: String)
+    desc: String,
+   cgdId:String,
+    name: String,
+    dateOfBirth: String,
+    citizentype: String,
+    hv_status: String,
+    Remarks: String
+    
+		  )
     
    case class EventStatus(
     nric: String,
@@ -35,7 +43,7 @@ object Model {
 
   case class EventList(items: List[Event])
   
-  case class EventItemList(items: List[EventItem])
+  case class EventItemList(items: List[EventItem],eventKey:String)
 
   case class EventStatusList(items: List[EventStatus])
 
