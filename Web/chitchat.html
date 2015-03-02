@@ -1,0 +1,21 @@
+---
+layout: default
+title: Chit Chat Section
+---
+{% javascript_asset_tag chit-chat %}
+    - /_assets/chit-chat.js.coffee
+    - /_assets/bootstrap-form.js.coffee
+{% endjavascript_asset_tag %}
+<!-- Main component for a primary marketing message or call to action -->
+
+<div class="container">   
+  <h2>Chit Chat Section</h2>  
+  <div id="chit-chat-section-contents">
+  </div>
+</div>
+
+<script type="text/javascript">
+      $(document).ready(function() {
+        cp.chitchat = new cp.ChitChatSection()
+      });
+</script>

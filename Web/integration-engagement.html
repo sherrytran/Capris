@@ -1,0 +1,22 @@
+---
+layout: default
+title: Integration Engagement
+---
+{% javascript_asset_tag integration %}
+    - /_assets/integration-engagement.js.coffee
+    - /_assets/bootstrap-form.js.coffee
+{% endjavascript_asset_tag %}
+<!-- Main component for a primary marketing message or call to action -->
+
+<div class="container">   
+  <h2>Integration Engagement Activity</h2>  
+  <div id="integration-engagement-contents">
+  </div>
+</div>
+
+<script type="text/javascript">
+      $(document).ready(function() {
+        cp.integration = new cp.IntegrationEngagement()
+        //cp.horizontalBootstrapForm = new cp.HorizontalBootstrapForm();
+      });
+</script>
