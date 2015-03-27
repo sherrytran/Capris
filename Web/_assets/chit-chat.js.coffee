@@ -14,50 +14,72 @@ class ChitChatSection
 
 
   fillChitChat: () =>
+    url = cp.buildSafeUrl("/dc/content/CPR") + "?action=upload"
     @actList=[]
     @loadLocationList()
-    @div = $("<div style='max-height: 800px; overflow-x: hidden; overflow-y: auto; margin-top: 10px; margin-bottom: 10px;'></div>").appendTo(@contents)
+    @div = $("<div style='overflow-x: hidden; overflow-y: auto; margin-top: 10px; margin-bottom: 10px;'></div>").appendTo(@contents)
     form = new cp.HorizontalBootstrapForm(@div)
     @div=form.selectRow("Division")
     @rcnc=form.selectRow("RC/NC")
     @advisor=form.inputRow("Name of Advisor","",100)
     @venue=form.inputRow("Venue","",100)
-    @date=form.inputRow("Date","",100)
+    @datePhase1=form.inputRow("Date for Phase 1","",100)
+    $(@datePhase1).datepicker({
+      dateFormat: 'dd/mm/yy'
+    })
     @faci=form.inputRow("Name of Facilitator","",100)
     @tour=form.inputRow("CLJ Tour","",100)
-    @datePhase1=form.inputRow("Date for Phase 1","",100)
     @datePhase2=form.inputRow("Date for Phase 2","",100)
-    remDiv=$("<div class='form-group'></div>").appendTo($(".form-horizontal"))
-    $("<label class='col-sm-2 control-label'>Reimbursed (Y/N)</label>").appendTo(remDiv)
-    $("<div class='col-sm-4'><input class='form-control' type='text'></div>").appendTo(remDiv)
-    $("<label class='col-sm-2 control-label'>Remarks</label>").appendTo(remDiv)
-    $("<div class='col-sm-4'><input class='form-control' type='text'></div>").appendTo(remDiv)
-    table3=$("<table class='table'></table>").insertAfter(remDiv)
+    $(@datePhase2).datepicker({
+      dateFormat: 'dd/mm/yy'
+    })
+    @remark=form.inputRow("Remark","",100)
+    table3=$("<table class='table'></table>").insertAfter(@remark)
     tr1=$("<tr></tr>").appendTo(table3);
-    td3 = $("<td align='center'><h2>Citizen Type</h2></td>").appendTo(tr1);
-    td4 = $("<td align='center'><h2>Nationality</h2></td>").appendTo(tr1);
+    $("<td align='center'><h2>Citizen Type</h2></td>").appendTo(tr1);
     tr2=$("<tr></tr>").appendTo(table3)
     td1=$("<td></td>").appendTo(tr2)
-    td2=$("<td></td>").appendTo(tr2)
     table1=$("<table></table>").appendTo(td1)
-    $("<tr><th></th><th>Invited</th><th>Participated</th>").appendTo(table1)
-    $("<tr><th>Local Singaporean</th><td><input class='form-control' type='text'></td><td><input class='form-control' type='text'></td>").appendTo(table1)
-    $("<tr><th>Naturalised Citizen</th><td><input class='form-control' type='text'></td><td><input class='form-control' type='text'></td>").appendTo(table1)
-    $("<tr><th>New Citizen</th><td><input class='form-control' type='text'></td><td><input class='form-control' type='text'></td>").appendTo(table1)
-    $("<tr><th>PRs</th><td><input class='form-control' type='text'></td><td><input class='form-control' type='text'></td>").appendTo(table1)
-    $("<tr><th>Foreigners</th><td><input class='form-control' type='text'></td><td><input class='form-control' type='text'></td>").appendTo(table1)
+    $("<tr><th></th><th>Participated</th>").appendTo(table1)
 
+    $("<tr><th>Locals</th><td><input id='local-part' class='form-control' type='text'></td>").appendTo(table1)
+    $("<tr><th>New Immigrants</th><td><input id='immi-part' class='form-control' type='text'></td>").appendTo(table1)
+    $("<tr><th>Foreigners</th><td><input id='fg-part' class='form-control' type='text'></td>").appendTo(table1)
+
+    tr3=$("<tr></tr>").appendTo(table3);
+    $("<td align='center'><h2>Country Of Birth</h2></td>").appendTo(tr3);
+    tr4=$("<tr></tr>").appendTo(table3)
+    td2=$("<td></td>").appendTo(tr4)
     table2=$("<table></table>").appendTo(td2)
     $("<tr><th></th><th></th><th></th>").appendTo(table2)
-    $("<tr><th>Malaysian</th><td><input class='form-control' type='text'></td><td></td>").appendTo(table2)
-    $("<tr><th>Indian</th><td><input class='form-control' type='text'></td><td></td>").appendTo(table2)
-    $("<tr><th>China PRC</th><td><input class='form-control' type='text'></td><td></td>").appendTo(table2)
-    $("<tr><th>Others</th><td><input class='form-control' type='text'></td><td>Please State e.g (2 British, 1 Korean):</td><td><input class='form-control' type='text'></td>").appendTo(table2)
-    $("<tr><th>Foreigners</th><td><input class='form-control' type='text'></td><td></td>").appendTo(table2)
+    $("<tr><th>Singapore</th><td><input id='n_local_part' class='form-control' type='text'></td><td></td>").appendTo(table2)
+    $("<tr><th>India</th><td><input id='n_india_part' class='form-control' type='text'></td><td></td>").appendTo(table2)
+    $("<tr><th>Indonesia</th><td><input id='n_indo_part' class='form-control' type='text'></td><td></td>").appendTo(table2)
+    $("<tr><th>Malaysia</th><td><input id='n_malay_part' class='form-control' type='text'></td><td></td>").appendTo(table2)
+    $("<tr><th>People Republic Of China</th><td><input id='n_cn_part' class='form-control' type='text'></td><td></td>").appendTo(table2)
+    $("<tr><th>Philipphine</th><td><input id='n_ph_part' class='form-control' type='text'></td><td></td>").appendTo(table2)
+    $("<tr><th>Others</th><td><input id='n_other_part' class='form-control' type='text'></td><td>Please State e.g (2 British, 1 Korean):</td><td><input id='n_other_remark' class='form-control' type='text'></td>").appendTo(table2)
+
+
+    tr5=$("<tr></tr>").appendTo(table3);
+    $("<td align='center'><h2>Ethnic</h2></td>").appendTo(tr5);
+    tr6=$("<tr></tr>").appendTo(table3)
+    td2=$("<td></td>").appendTo(tr6)
+    table2=$("<table></table>").appendTo(td2)
+    $("<tr><th></th><th></th><th></th>").appendTo(table2)
+    $("<tr><th>Chinese</th><td><input id='e-cn-part' class='form-control' type='text'></td><td></td>").appendTo(table2)
+    $("<tr><th>Malay</th><td><input id='e-ma-part' class='form-control' type='text'></td><td></td>").appendTo(table2)
+    $("<tr><th>Indian</th><td><input id='e-in-part' class='form-control' type='text'></td><td></td>").appendTo(table2)
+    $("<tr><th>Others</th><td><input id='e-other-part' class='form-control' type='text'></td><td></td>").appendTo(table2)
 
     button=form.buttonRow("Submit")
+    @formUpload =  $("<form id='upload-dialog-form' action='#{url}' enctype='multipart/form-data' method='post' name='upload' target='upload-iframe' />").insertAfter(table3)
+    $("<input id='upload-dialog-name' type='file' name='file'/>").appendTo(@formUpload)
+    $("<iframe id='upload-iframe' name='upload-iframe' src='' style='width:0;height:0;border:0px solid #fff;'></iframe>").insertAfter(table3)
+
     button.click (e) =>
       e.preventDefault()
+      @formUpload.submit()
       @saveActivityDetail()
 
     $(@div).on "change", =>
@@ -98,7 +120,6 @@ class ChitChatSection
     @actList = data
     console.info(data)
     @buildDivision()
-    #@buildActivitySelection(@currentYear)
 
   onSelect: (andThen)->
     req =
@@ -136,31 +157,64 @@ class ChitChatSection
     })
 
   onSave: (andThen)->
-    title=$(@activity).find(":selected").text()
-    date=$(@date).val()
-    convertDate=$.datepicker.formatDate('yy-mm-dd', new Date(date))
-    desc=$(@desc).val()
-    org=$(@organiser).val()
-    ic=$(@ic).val()
-    part=parseInt($(@participants).val())
-    immi=parseInt($(@immigrants).val())
-    budget=parseFloat($(@budget).val())
-    onepa=$(@onepa).val()
-    activityItem = {"title":title,"date":convertDate,"description":desc,"organiser":org,"staff":ic,"participants":part,"immigrants":immi,"budget":budget,"onepa":onepa}
-    console.info(activityItem)
-    postURL = cp.buildSafeUrl("/adhoc/integration/update/activity")
+    item = {basic:[],number:[]}
+    division=$(@div).find(":selected").text()
+    rcnc=$(@rcnc).find(":selected").text()
+    adviser=$(@advisor).val()
+    venue=$(@venue).val()
+    faci=$(@faci).val()
+    tour=$(@tour).val()
+    phase1=$(@datePhase1).val()
+    convertPhase1Date=$.datepicker.formatDate('yy-mm-dd', new Date(phase1))
+    phase2=$(@datePhase2).val()
+    convertPhase2Date=$.datepicker.formatDate('yy-mm-dd', new Date(phase2))
+    remark=$(@remark).val()
+    path=$("#upload-dialog-name")[0].files[0].name
+    uploadURL="http://localhost:9080/elx/do/cpr/dc/content/"+path+"?elx.attachment"
+
+    sg_part = parseInt($("#local-part").val())
+    immi_part= parseInt($("#immi-part").val())
+    foreigner_part=parseInt($("#fg-part").val())
+    n_local_part = parseInt($("#n_local_part").val())
+    n_india_part = parseInt($("#n_india_part").val())
+    n_indo_part = parseInt($("#n_indo_part").val())
+    n_ma_part = parseInt($("#n_malay_part").val())
+    n_cn_part = parseInt($("#n_cn_part").val())
+    n_philip_part = parseInt($("#n_ph_part").val())
+    n_other_part = parseInt($("#n_other_part").val())
+    n_other_remark = $("#n_other_remark").val()
+
+    e_ma_part = parseInt($("#e-ma-part").val())
+    e_in_part = parseInt($("#e-in-part").val())
+    e_cn_part = parseInt($("#e-cn-part").val())
+    e_other_part = parseInt($("#e-other-part").val())
+
+    basicItem = new cp.BasicInfo("","AB","RC",adviser,venue,faci,tour,convertPhase1Date,convertPhase2Date,remark)
+    numberItem = new cp.NumberInfo(sg_part,immi_part,foreigner_part,n_cn_part,n_ma_part,n_india_part,n_local_part,n_indo_part,n_philip_part,n_other_part,n_other_remark,e_cn_part,e_ma_part,e_in_part,e_other_part,uploadURL)
+    console.info(basicItem)
+    console.info(numberItem)
+    item.basic.push(basicItem)
+    item.number.push(numberItem)
+    console.info(item)
+    postURL = cp.buildSafeUrl("/adhoc/chitchat/update/chit-chat-activity")
     $.ajax({
       type: 'post'
       url: postURL
       contentType: 'application/json'
-      data: JSON.stringify(activityItem)
+      data: JSON.stringify(item)
       success: andThen
       error: (jqXHR, textStatus, errorThrown) =>
         console.info(textStatus)
         console.info(jqXHR)
         console.info(errorThrown)
-
-
     })
 
+class BasicInfo
+  constructor:(@cs_code,@div_code,@rc_code,@adviser,@venue,@faci,@tour,@phase1_date,@phase2_date,@remark)->
+
+class NumberInfo
+  constructor:(@ci_local_part,@ci_imm_part,@ci_for_part,@co_china_part,@co_malaysia_part,@co_india_part,@co_sing_part,@co_indonesia_part,@co_philip_part,@co_other_part,@co_other_remark,@et_chinese_part,@et_malay_part,@et_indian_part,@et_other_part,@url)->
+
+cp.BasicInfo=BasicInfo
+cp.NumberInfo=NumberInfo
 cp.ChitChatSection=ChitChatSection

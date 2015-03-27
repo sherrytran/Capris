@@ -44,7 +44,7 @@ def insertEvent(conn : Connection, s : Event) {
 	  }
 
 val EventColumns = Array[Column](
-    RWColumn("activity_id", DataType.String, 45),
+    RWColumn("detail_id", DataType.String, 45),
     RWColumn("rc_code", DataType.String, 45),
     RWColumn("cgd_id", DataType.String, 45),
     RWColumn("activity_title", DataType.String, 45),

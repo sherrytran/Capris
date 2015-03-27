@@ -1,4 +1,4 @@
-package net.capris.integration
+package net.capris.chitchat
 
 import scala.concurrent._
 import com.elixirtech.json.JsonFormatter
@@ -34,26 +34,15 @@ class WebService extends Actor
   CaprisDB.testInit
   
   
-  get("/get/activity") {
-    try {
-      future(JSONResponse(JsonFormatter.build(Activity.activityList())))
-    }
-    catch {
-      case ex : Exception =>
-        log.error(s"Error getting activity list",ex)
-        future(ErrorResponse(503,"Server unable to respond, please try again later"))
-    }
-  }
-  
-  post("/update/activity") {
+  post("/update/chit-chat-activity") {
     val body = request.bodyText
     log.info(body)
-    val activity = JsonParser.parse(body).extract[Activity.ActivityDetail]
+    val activity = JsonParser.parse(body).extract[Activity.Details]
     log.info(activity)
     val creds = Authentication.credentials
-    Activity.insertActivityDetail(activity) match {
+    Activity.insertChitChatDetail(activity) match {
         case LogMessage.None => 
-          log.info("Updated activity successfully")
+          log.info("Updated chit chat activity successfully")
           future(OkResponse)
         case msg => 
           future(ErrorResponse(400,msg.toString))

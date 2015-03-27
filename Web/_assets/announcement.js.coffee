@@ -23,11 +23,14 @@ class Announcements
     footerForm = new cp.HorizontalBootstrapForm(@contents)
     save = footerForm.buttonRow("Save Changes")
     @infoSpan = $("<span style='margin-left: 10px;'></span>").insertAfter(save)
-    save.click(@test)
+    $(save).click (event) ->
+      event.preventDefault()
+      @test
     data=[{"title":"BizInsights Maintenance 22/8","line1":"Update will start from 6:45pm to"},{"title":"Credit Card Maintenance","line1":"Credit Card facilities "},{"title":"BizInsights Maintenance 29/7","line1":"Update will start from 6:30pm to"},{"title":"BizInsights is now Live!","line1":"Please log in with your new"}]
     @buildAnnouncements(data)
 
   test: ()=>
+    console.info("click")
     @onSave(@result)
 
   onSave: (andThen)->
