@@ -11,11 +11,25 @@ title: Chit Chat Session
 <div class="container">   
   <h2>Chit Chat Session</h2>  
   <div id="chit-chat-section-contents">
+  	 <form id="chitchat-form">
+  	 	<table id='first-table' class='table table-responsive' style='width: 80%;'>
+  	 		<tr><th>Division</th><td><select id='div' class='form-control input-sm'></select></td></tr>
+  	 		<tr><th>RC/NC</th><td><select id='rcnc' class='form-control input-sm'></select></td></tr>
+  	 		<tr><th>Name of Advisor *</th><td><input id='adv' name='advisor' class='form-control input-sm' type='text'></td></tr>
+  	 		<tr><th>Venue *</th><td><input id='venue' name='venue' class='form-control input-sm' type='text'></td></tr>
+  	 		<tr><th>Date for Phase 1 *</th><td><input id='phase1' name='phase1date' class='form-control input-sm' type='text'></td></tr>
+  	 		<tr><th>Name of Facilitator *</th><td><input id='faci' name='faci' class='form-control input-sm' type='text'></td></tr>
+  	 		<tr><th>CLJ Tour *</th><td><input id='tour' name='cljtour' class='form-control input-sm' type='text'></td></tr>
+  	 		<tr><th>Date for Phase 2 *</th><td><input name='phase2date' id='phase2' class='form-control input-sm' type='text'></td></tr>
+  	 		<tr><th>Remark</th><td><input id='remark' name='remark' class='form-control input-sm' type='text'></td></tr>
+  	 	</table>
+  	 </form>
   </div>
 </div>
 
 <script type="text/javascript">
       $(document).ready(function() {
         cp.chitchat = new cp.ChitChatSection()
+        cp.chitchat.validate()
       });
 </script>

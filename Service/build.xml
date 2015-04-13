@@ -2,7 +2,7 @@
 
 <project name="CaprisService" default="build" xmlns:alex="com.elixirtech.alex2.ant">
 
-	<property name="elx.version" value="3.7.0"/>
+	<property name="elx.version" value="4.0.0"/>
 	<property file="${user.home}/build/V3.properties" />
 	<property name="root" value="${user.home}/Code/Bravura"/>
 	<property file="${root}/Build/Ambience.properties" />
