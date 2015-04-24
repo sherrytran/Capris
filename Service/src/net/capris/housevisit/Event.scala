@@ -5,12 +5,7 @@ import java.sql.Connection
 import java.sql.Statement
 import java.lang.System
 import net.capris.service.db.CaprisDB
-import net.capris.profile.DAO
-import net.capris.profile.Column
-import net.capris.profile.RWColumn
-import net.capris.profile.PSWrapper
-import net.capris.profile.RSWrapper
-import net.capris.profile.DataType
+import net.capris.DAO._
 
 object Event extends DAO with LoggingHelper2 {
   

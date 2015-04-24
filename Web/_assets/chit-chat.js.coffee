@@ -6,6 +6,20 @@ cp.buildSafeUrl = (path,query)->
       sb += ("/" + encodeURIComponent(part))
   sb + (query || "")
 
+$.validator.addMethod 'anyDate', ((value, element) ->
+  value.match /^(0?[1-9]|[12][0-9]|3[0-1])[/](0?[1-9]|1[0-2])[/](19|20)?\d{2}$/
+), 'Please enter a valid date dd/mm/yyyy'
+
+$.validator.addMethod 'greaterThan', ((value, element, params) ->
+  if !/Invalid|NaN/.test(new Date(value))
+    return new Date(value) > new Date($(params).val())
+  isNaN(value) and isNaN($(params).val()) or Number(value) > Number($(params).val())
+), 'Must be greater than {0}.'
+
+$.validator.addMethod 'time', ((value, element) ->
+  @optional(element) or /^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9]))?$/i.test(value)
+), 'Please enter a valid time.'
+
 class ChitChatSection
   constructor: () ->
    	cred=cp.credentials
@@ -61,9 +75,9 @@ class ChitChatSection
     @infoSpan = $("<p style='display:inline;margin-left:8px'></p>").insertAfter(@button)
     @button.click (e) =>
       e.preventDefault()
-      @saveActivityDetail()
       if($(@form).valid() and $(@formUpload).valid())
         @formUpload.submit()
+        @saveActivityDetail()
 
 
     $("#div").on "change", =>
@@ -95,7 +109,7 @@ class ChitChatSection
         },
         phase1date: {
           required: true
-          date:true
+          anyDate:true
         },
         faci: {
           required: true
@@ -104,8 +118,8 @@ class ChitChatSection
           required: true
         },
         phase2date: {
-          required: true
-          date:true
+          anyDate:true
+          greaterThan: "#phase1"
         },
         localpart: {
           required: true,
@@ -166,24 +180,19 @@ class ChitChatSection
       },
       messages: {
         advisor: {
-          required: "Please enter an advisor's name"
+          required: "Please enter an adviser's name"
         },
         venue: {
           required: "Please enter a venue's name"
         },
         phase1date: {
           required: "Please enter phase 1 date"
-          date: "Please enter a valid date"
         },
         faci: {
           required: "Please enter a facilitator's name"
         },
         cljtour: {
           required: "Please enter a CLJ Tour"
-        },
-        phase2date: {
-          required: "Please enter phase 2 date"
-          date: "Please enter a valid date"
         },
         localpart: {
           required: "Please enter a number",
@@ -332,8 +341,7 @@ class ChitChatSection
 
   onSave: (andThen)->
     @infoSpan.text("Saving...")
-    #item = {basic:[],number:[]}
-    item={}
+    item = {basic:[],number:[]}
     grc=''
     division=$("#div").val()
     rcnc=$("#rcnc").val()
@@ -346,8 +354,8 @@ class ChitChatSection
     phase2=$("#phase2").val()
     convertPhase2Date=$.datepicker.formatDate('yy-mm-dd', new Date(phase2))
     remark=$("#remark").val()
-    #path=$("#upload-dialog-name")[0].files[0].name
-    #uploadURL="http://localhost:9080/elx/do/cpr/dc/content/"+path+"?elx.attachment"
+    path=$("#upload-dialog-name")[0].files[0].name
+    uploadURL="http://localhost:9080/elx/do/cpr/dc/content/"+path+"?elx.attachment"
 
     sg_part = parseInt($("#local-part").val())
     immi_part= parseInt($("#immi-part").val())
@@ -366,19 +374,19 @@ class ChitChatSection
     e_cn_part = parseInt($("#e-cn-part").val())
     e_other_part = parseInt($("#e-other-part").val())
 
-    #basicItem = new cp.BasicInfo(grc,division,rcnc,adviser,venue,faci,tour,convertPhase1Date,convertPhase2Date,remark)
-    #numberItem = new cp.NumberInfo(sg_part,immi_part,foreigner_part,n_cn_part,n_ma_part,n_india_part,n_local_part,n_indo_part,n_philip_part,n_other_part,n_other_remark,e_cn_part,e_ma_part,e_in_part,e_other_part,uploadURL)
-    #item.basic.push(basicItem)
-    #item.number.push(numberItem)
+    basicItem = new cp.BasicInfo(grc,division,rcnc,adviser,venue,faci,tour,convertPhase1Date,convertPhase2Date,remark)
+    numberItem = new cp.NumberInfo(sg_part,immi_part,foreigner_part,n_cn_part,n_ma_part,n_india_part,n_local_part,n_indo_part,n_philip_part,n_other_part,n_other_remark,e_cn_part,e_ma_part,e_in_part,e_other_part,uploadURL)
+    item.basic.push(basicItem)
+    item.number.push(numberItem)
     #console.info(item)
-    termItem= new cp.TermInfo("AH","2013-08-31","2015-09-30","http://google.com")
-    console.info(termItem)
-    postURL = cp.buildSafeUrl("/adhoc/chitchat/update/ccc-term")
+    #termItem= new cp.TermInfo("TP","2013-08-31","2015-09-30","http://google.com",1)
+    #console.info(termItem)
+    postURL = cp.buildSafeUrl("/adhoc/chitchat/update/chit-chat-activity")
     $.ajax({
       type: 'post'
       url: postURL
       contentType: 'application/json'
-      data: JSON.stringify(termItem)
+      data: JSON.stringify(item)
       success: andThen
       error: (jqXHR, textStatus, errorThrown) =>
         console.info(textStatus)
@@ -386,8 +394,6 @@ class ChitChatSection
         console.info(errorThrown)
     })
 
-class TermInfo
-  constructor:(@div_code,@term_start_date,@term_end_date,@excel_url)->
 
 class BasicInfo
   constructor:(@cs_code,@div_code,@rc_code,@adviser,@venue,@faci,@tour,@phase1_date,@phase2_date,@remark)->
@@ -397,6 +403,5 @@ class NumberInfo
 
 cp.BasicInfo=BasicInfo
 cp.NumberInfo=NumberInfo
-cp.TermInfo=TermInfo
 cp.ChitChatSection=ChitChatSection
 

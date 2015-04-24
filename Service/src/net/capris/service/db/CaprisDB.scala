@@ -103,7 +103,7 @@ object CaprisDB extends Schema with LoggingHelper2 {
     val queryTimeout = poolConfig.getInt("query-timeout")
     val maxIdleTime = poolConfig.getInt("max-idle-time")
     val maxConnectionAge = poolConfig.getInt(" max-connection-age")
-    log.info("BizInsights Database connection: " + url)
+    log.info("Capris Database connection: " + url)
     new ConnectionPoolConfig(
       driver,
       url,

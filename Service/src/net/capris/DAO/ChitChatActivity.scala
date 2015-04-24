@@ -1,19 +1,13 @@
-package net.capris.chitchat
+package net.capris.DAO
 
 import com.elixirtech.arch._
 import java.sql.Connection
 import java.sql.Statement
 import java.lang.System
 import net.capris.service.db.CaprisDB
-import net.capris.profile.DAO
-import net.capris.profile.Column
-import net.capris.profile.RWColumn
-import net.capris.profile.PSWrapper
-import net.capris.profile.RSWrapper
-import net.capris.profile.DataType
 import scala.collection.mutable.ArrayBuffer
 
-object Activity extends DAO with LoggingHelper2 {
+object ChitChatActivity extends DAO with LoggingHelper2 {
   
 def load(div : String) : Array[Location] = {
     ARM.run { arm=>
@@ -106,7 +100,7 @@ val ChitChatColumns = Array[Column](
     )
    
 
-def prepareNewEvent(ps: PSWrapper,g:Activity.Details) {
+def prepareNewEvent(ps: PSWrapper,g:ChitChatActivity.Details) {
     val cols = ChitChatColumns
     val s=g.basic.head
     val e=g.number.head
