@@ -1,0 +1,38 @@
+---
+layout: default
+title: Chit Chat Session
+---
+{% javascript_asset_tag css-gcc %}
+    - /_assets/css-gcc.js.coffee
+{% endjavascript_asset_tag %}
+<!-- Main component for a primary marketing message or call to action -->
+
+<div class="container">   
+  <h2>CSS/GCC Plan</h2>  
+  <div id="css-gcc-contents">
+  	 <form id="css-gcc-form">
+  	 	<table id='first-table' class='table table-responsive' style='width: 80%;'>
+  	 		<tr><th>Activity Type</th><td><select id='type' class='form-control input-sm'><option>CSS</option><option>GCC</option></select></td></tr>
+  	 		<tr><th>Lead Division</th><td><select id='div' class='form-control input-sm'></select></td></tr>
+  	 		<tr><th>Activity Description *</th><td><input id='desc' name='desc' class='form-control input-sm' type='text'></td></tr>
+  	 		<tr><th>Activity Date *</th><td><input id='actDate' name='actDate' class='form-control input-sm' type='text'></td></tr>
+  	 		<tr><th>Start Time *</th><td><input id='start' name='start' class='form-control input-sm' type='text'></td></tr>
+  	 		<tr><th>End Time *</th><td><input id='end' name='end' class='form-control input-sm' type='text'></td></tr>
+  	 		<tr><th>Venue *</th><td><input id='venue' name='venue' class='form-control input-sm' type='text'></td></tr>
+  	 		<tr><th>GOH/Speaker *</th><td><input name='goh' id='goh' class='form-control input-sm' type='text'></td></tr>
+  	 		<tr><th>Seating Capacity</th><td><input id='seat' name='seat' class='form-control input-sm' type='text'></td></tr>
+        <tr><th>CO/INC Staff IC</th><td><input id='staff' name='staff' class='form-control input-sm' type='text'></td></tr>
+        <tr><th>CCC-For Reimbursement</th><td><input id='re' name='re' class='form-control input-sm' type='text'></td></tr>
+        <tr><th>Meals Provided</th><td><input id='meal' name='meal' class='form-control input-sm' type='text'></td></tr>
+        <tr><th>Delivery Address</th><td><input id='delivery' name='delivery' class='form-control input-sm' type='text'></td></tr>
+  	 	</table>
+  	 </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+      $(document).ready(function() {
+        cp.cssgcc = new cp.CssGccSection()
+        cp.cssgcc.validate()
+      });
+</script>
