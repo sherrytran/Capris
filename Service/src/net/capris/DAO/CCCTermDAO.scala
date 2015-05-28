@@ -14,7 +14,7 @@ def load(div : String) : Array[Term] = {
     ARM.run { arm=>
       val conn = arm.manage(CaprisDB.getConnection)
       val attrs = TermColumns.map(_.name).mkString(",")
-      val sql = s"SELECT ${attrs} FROM d_ccc_term WHERE div_code=?"
+      val sql = s"SELECT ${attrs} FROM c_ccc_term WHERE div_code=?"
       SQLLogger.info(sql)
       val ps = arm.manage(conn.prepareStatement(sql))
       //ps.setMaxRows(1)
@@ -22,7 +22,7 @@ def load(div : String) : Array[Term] = {
       val rs = arm.manage(new RSWrapper(ps.executeQuery))
       val buffer = new ArrayBuffer[Term]
       while (rs.next) {
-        buffer += Term(rs.getString,rs.getString,rs.getString,rs.getString,rs.getString,rs.getString)
+        buffer += Term(rs.getString,rs.getString,rs.getString,rs.getString,rs.getString)
       }
       buffer.toArray
       
@@ -37,14 +37,16 @@ def updateExcel(s:CCCTermDAO.CCCTermDetail):LogMessage= {
         val div=s.div_code
         val start=s.term_start_date
         val end=s.term_end_date
-        val sql = s"update d_ccc_term set div_status=CASE WHEN appointment_pdf_url is null or appointment_pdf_url='' THEN null ELSE 'Pending' END,hq_status=CASE WHEN appointment_pdf_url is null or appointment_pdf_url='' THEN 'Waiting CO' ELSE 'Waiting HQ' END , appointment_excel_url=? where div_code=? and term_start_date=? and term_end_date=?;"
+        val remark = s.div_remark
+        val sql = s"update c_ccc_term set div_status='Pending',hq_status='Waiting HQ',appointment_excel_url=? , div_remark=? where div_code=? and term_start_date=? and term_end_date=?;"
         SQLLogger.info(sql)
         try {
           val ps = arm.manage(conn.prepareStatement(sql))
           ps.setString(1,excelUrl)
-          ps.setString(2,div)
-          ps.setString(3,start)
-          ps.setString(4,end)
+          ps.setString(2,remark)
+          ps.setString(3,div)
+          ps.setString(4,start)
+          ps.setString(5,end)
           ps.executeUpdate()
           conn.commit
           LogMessage.None
@@ -64,6 +66,7 @@ def updatePDF(s:CCCTermDAO.CCCTermDetail):LogMessage= {
         val div=s.div_code
         val start=s.term_start_date
         val end=s.term_end_date
+        val remark = s.div_remark
         val sql = s"update d_ccc_term set div_status=CASE WHEN appointment_excel_url is null or appointment_excel_url='' THEN null ELSE 'Pending' END,hq_status=CASE WHEN appointment_excel_url is null or appointment_excel_url='' THEN 'Waiting CO' ELSE 'Waiting HQ' END , appointment_pdf_url=? where div_code=? and term_start_date=? and term_end_date=?;"
         SQLLogger.info(sql)
         try {
@@ -88,7 +91,6 @@ val TermColumns = Array[Column](
     RWColumn("term_start_date", DataType.String, 45),
     RWColumn("term_end_date", DataType.String, 45),
     RWColumn("appointment_excel_url", DataType.String, 1000),
-    RWColumn("appointment_pdf_url", DataType.String, 1000),
     RWColumn("hq_status", DataType.String, 45)
     )
 
@@ -97,9 +99,8 @@ def buildTerm(rs: RSWrapper): Term = {
     val term_start = rs.getString
     val term_end = rs.getString
     val excel_url=rs.getString
-    val pdf_url=rs.getString
     val hq_status=rs.getString
-    Term(div_code,term_start,term_end,excel_url,pdf_url,hq_status)
+    Term(div_code,term_start,term_end,excel_url,hq_status)
 }
 
 val CccTermColumns = Array[Column](
@@ -107,22 +108,21 @@ val CccTermColumns = Array[Column](
     RWColumn("term_start_date", DataType.String, 45),
     RWColumn("term_end_date", DataType.String, 45),
     RWColumn("appointment_excel_url", DataType.String, 1000),
-    RWColumn("appointment_pdf_url", DataType.String, 1000)
+    RWColumn("div_remark",DataType.String, 200)
     )
    
 case class CCCTermDetail(
     div_code:String,
     term_start_date:String,
     term_end_date:String,
-    url:String
-    )
+    url:String,
+    div_remark:String    )
 
 case class Term(
     div_code:String,
     term_start_date:String,
     term_end_date:String,
     excel_url:String,
-    pdf_url:String,
     hq_status:String
     )
 }

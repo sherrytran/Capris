@@ -34,19 +34,12 @@ class ChitChatSection
     @form=$("#chitchat-form")
     #@div = $("<div style='overflow-x: hidden; overflow-y: auto; margin-top: 10px; margin-bottom: 10px;'></div>").appendTo(@contents)
     table=$("#first-table")
-    $("#phase1").datepicker({
-      dateFormat: 'dd/mm/yy'
-    })
-    $("#phase2").datepicker({
-      dateFormat: 'dd/mm/yy'
-    })
 
     table3=$("<table class='table table-responsive'></table>").insertAfter(table)
     tr1=$("<tr></tr>").appendTo(table3);
-    $("<td colspan='2'  align='center'><h2>Citizen Type</h2></td>").appendTo(tr1);
-    $("<tr><th></th><th>Participant(s)</th>").appendTo(table3)
-    $("<tr><th>Locals *</th><td><input id='local-part' name='localpart' class='form-control input-sm' type='text'></td>").appendTo(table3)
-    $("<tr><th>New Immigrants *</th><td><input id='immi-part' name='immipart' class='form-control input-sm' type='text'></td>").appendTo(table3)
+    $("<td colspan='2'  align='left'><h4>User Profile</h4></td>").appendTo(tr1);
+    $("<tr><th>User ID *</th><td><input id='userID' name='userID' class='form-control input-sm' type='text'></td>").appendTo(table3)
+    $("<tr><th>User Name *</th><td><input id='' name='immipart' class='form-control input-sm' type='text'></td>").appendTo(table3)
     $("<tr><th>Foreigners *</th><td><input id='fg-part' name='fgpart' class='form-control input-sm' type='text'></td>").appendTo(table3)
 
     tr3=$("<tr></tr>").appendTo(table3);
@@ -381,7 +374,7 @@ class ChitChatSection
     #console.info(item)
     #termItem= new cp.TermInfo("TP","2013-08-31","2015-09-30","http://google.com",1)
     #console.info(termItem)
-    postURL = cp.buildSafeUrl("/adhoc/chitchat/update/chit-chat-activity")
+    postURL = cp.buildSafeUrl("/adhoc/web/update/house-visit-activity-plan")
     $.ajax({
       type: 'post'
       url: postURL

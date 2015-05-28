@@ -45,23 +45,34 @@ class WebService extends Actor
      CssGccEvent.insertEvent(activity) match {
         case LogMessage.None => 
           log.info("Updated CSS GCC activity successfully")
-          future(OkResponse)
+          Future(OkResponse)
         case msg => 
-          future(ErrorResponse(400,msg.toString))
+          Future{ErrorResponse(400,msg.toString)}
       }
     
+  }
+  
+  get("/get/c-cdd-cs-div") {
+    try {
+      Future(JSONResponse(JsonFormatter.build(CCddCsDivDAO.load())))
+    }
+    catch {
+      case ex : Exception =>
+        log.error(s"Error getting division",ex)
+        Future(ErrorResponse(503,"Server unable to respond, please try again later"))
+    }
   }
   
   get("/get/ccc-term/:div") {
     val text = params(":div")
     println(text)
     try {
-      future(JSONResponse(JsonFormatter.build(CCCTermDAO.load(text))))
+      Future(JSONResponse(JsonFormatter.build(CCCTermDAO.load(text))))
     }
     catch {
       case ex : Exception =>
         log.error(s"Error getting division",ex)
-        future(ErrorResponse(503,"Server unable to respond, please try again later"))
+        Future(ErrorResponse(503,"Server unable to respond, please try again later"))
     }
   }
   
@@ -69,12 +80,12 @@ class WebService extends Actor
     val text = params(":div")
     println(text)
     try {
-      future(JSONResponse(JsonFormatter.build(ChitChatActivity.load(text))))
+      Future(JSONResponse(JsonFormatter.build(ChitChatActivity.load(text))))
     }
     catch {
       case ex : Exception =>
         log.error(s"Error getting division",ex)
-        future(ErrorResponse(503,"Server unable to respond, please try again later"))
+        Future(ErrorResponse(503,"Server unable to respond, please try again later"))
     }
   }
   
@@ -87,9 +98,9 @@ class WebService extends Actor
     ChitChatActivity.insertChitChatDetail(activity) match {
         case LogMessage.None => 
           log.info("Updated chit chat activity successfully")
-          future(OkResponse)
+          Future(OkResponse)
         case msg => 
-          future(ErrorResponse(400,msg.toString))
+          Future(ErrorResponse(400,msg.toString))
       }
     
   }
@@ -103,9 +114,9 @@ class WebService extends Actor
     CCCTermDAO.updateExcel(term) match {
         case LogMessage.None => 
           log.info("Updated ccc term successfully")
-          future(OkResponse)
+          Future(OkResponse)
         case msg => 
-          future(ErrorResponse(400,msg.toString))
+          Future(ErrorResponse(400,msg.toString))
       }
     
   }
@@ -119,14 +130,14 @@ class WebService extends Actor
     CCCTermDAO.updatePDF(term) match {
         case LogMessage.None => 
           log.info("Updated ccc term successfully")
-          future(OkResponse)
+          Future(OkResponse)
         case msg => 
-          future(ErrorResponse(400,msg.toString))
+          Future(ErrorResponse(400,msg.toString))
       }
     
   }
   
-   post("/housevisit/update") {
+   post("/update/house-visit-activity-plan") {
     val body = request.bodyText
     log.info(body)
     val events = JsonParser.parse(body).extract[Model.Event]
@@ -135,10 +146,10 @@ class WebService extends Actor
     HouseVisit.UpdateHouseVisit2(events) match {
         case LogMessage.None => 
           log.info("Updated house visit successfully")
-          future(OkResponse)
+          Future(OkResponse)
         case msg => 
           msg.log(log)
-          future(ErrorResponse(400,msg.toString))
+          Future(ErrorResponse(400,msg.toString))
       }
     
   }

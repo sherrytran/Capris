@@ -3,15 +3,17 @@ layout: default
 title: Report
 ---
 {% javascript_asset_tag announcement %}
-    - /_assets/report.js.coffee
     - /_assets/announcement.js.coffee
-    - /_assets/bootstrap-form.js.coffee
 {% endjavascript_asset_tag %}
 <!-- Main component for a primary marketing message or call to action -->
 
 <div class="container">   
-  <h2>Announcement</h2>  
+  <h2>Announcement Entry Screen</h2>  
   <div id="sp-announcements-contents">
+    <form id="announcement-form">
+      <table id='first-table' class='table table-responsive' style='width: 50%;'>
+      </table>
+     </form>
   </div>
 </div>
 
