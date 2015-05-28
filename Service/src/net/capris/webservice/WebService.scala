@@ -153,5 +153,21 @@ class WebService extends Actor
       }
     
   }
+   
+  post("/update/announcement") {
+    val body = request.bodyText
+    log.info(body)
+    val activity = JsonParser.parse(body).extract[AnnouncementDAO.AnnouncementDetail]
+    log.info(activity)
+    val creds = Authentication.credentials
+     AnnouncementDAO.insertAnnouncementActivity(activity) match {
+        case LogMessage.None => 
+          log.info("Updated Announcement successfully")
+          Future(OkResponse)
+        case msg => 
+          Future{ErrorResponse(400,msg.toString)}
+      }
+    
+  }
 
 }
