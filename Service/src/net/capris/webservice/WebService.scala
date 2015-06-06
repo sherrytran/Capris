@@ -142,8 +142,9 @@ class WebService extends Actor
     log.info(body)
     val events = JsonParser.parse(body).extract[Model.Event]
     log.info(events)
-    val creds = Authentication.credentials
-    HouseVisit.UpdateHouseVisit2(events) match {
+    val user = Authentication.username()
+    log.info("user: "+user)
+    HouseVisit.UpdateHouseVisit2(events,user) match {
         case LogMessage.None => 
           log.info("Updated house visit successfully")
           Future(OkResponse)
@@ -159,10 +160,24 @@ class WebService extends Actor
     log.info(body)
     val activity = JsonParser.parse(body).extract[AnnouncementDAO.AnnouncementDetail]
     log.info(activity)
-    val creds = Authentication.credentials
-     AnnouncementDAO.insertAnnouncementActivity(activity) match {
+    val user = Authentication.username()
+     AnnouncementDAO.insertAnnouncementActivity(activity,user) match {
         case LogMessage.None => 
           log.info("Updated Announcement successfully")
+          Future(OkResponse)
+        case msg => 
+          Future{ErrorResponse(400,msg.toString)}
+      }
+    
+  }
+  
+  post("/update/calendar") {
+    val body = request.bodyText
+    val activity = JsonParser.parse(body).extract[CalendarDAO.CalendarDetail]
+   val user = Authentication.username()
+     CalendarDAO.insertCalendarActivity(activity,user) match {
+        case LogMessage.None => 
+          log.info("Updated Calendar successfully")
           Future(OkResponse)
         case msg => 
           Future{ErrorResponse(400,msg.toString)}

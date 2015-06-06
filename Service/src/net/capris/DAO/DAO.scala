@@ -8,6 +8,8 @@ import java.sql.ResultSet
 import java.io.Closeable
 import java.sql.PreparedStatement
 import com.elixirtech.arch.LoggingHelper2
+import java.text.SimpleDateFormat
+import java.sql.Timestamp
 
 sealed trait DataType
 
@@ -110,7 +112,8 @@ class PSWrapper(ps : PreparedStatement) extends Closeable with LoggingHelper2 {
 trait DAO {
   
   val SQLLogger = new NamedLogger("CAPRIS.SQL")
-  
+  val datetimeFmt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+  def nowTimestamp() = new Timestamp(new java.util.Date().getTime)
   def ids(field : String, table : String) : Array[String] = {
     val start = System.currentTimeMillis
     ARM.run { arm=>
@@ -146,4 +149,14 @@ trait DAO {
   def asBoolean(opt : Option[String]) : Boolean = opt.map(_=="1").getOrElse(false)
   def asOptBoolean(opt : Option[String]) : Option[Boolean] = opt.map(_=="1")
   def asOptBoolean(s : String) : Option[Boolean] = Option(s).map(_=="1")
+  
+  def formatTimestamp(t: Timestamp): String = {
+    try {
+      datetimeFmt.format(t.getTime)
+    } catch {
+      case e: Exception =>
+        null
+    }
+  }
+  
 }

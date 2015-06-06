@@ -21,7 +21,8 @@ object Model {
         floorNo: String,
         unitNo:String,
         postalCode: String,
-        reg_date:String
+        reg_date:String,
+        hv_status:Int
         
     )
 }

@@ -24,7 +24,7 @@ def updateEvent(conn : Connection, s:Model.Event) {
 	    }
 }
  
-def insertEvent(conn : Connection, s : Event) {
+def insertEvent(conn : Connection, s : Event, user:String) {
 	    ARM.run { arm =>
 	      val cols = EventColumns.map(_.name)
 	      val attrs = cols.mkString(",")
@@ -32,12 +32,12 @@ def insertEvent(conn : Connection, s : Event) {
 	      val sql = s"INSERT INTO f_activity ($attrs) VALUES($q);"
 	      SQLLogger.info(sql)
 	      val ps = arm.manage(conn.prepareStatement(sql))
-	      prepareNewEvent(new PSWrapper(ps),s)
+	      prepareNewEvent(new PSWrapper(ps),s,user)
 	      ps.executeUpdate()
 	    }
 	  }
 
-def insertHvActivity(conn : Connection, s : HvActivity) {
+def insertHvActivity(conn : Connection, s : HvActivity,user:String) {
       ARM.run { arm =>
         val cols = ActivityColumns.map(_.name)
         val attrs = cols.mkString(",")
@@ -45,7 +45,7 @@ def insertHvActivity(conn : Connection, s : HvActivity) {
         val sql = s"INSERT INTO f_house_visit_activity ($attrs) VALUES($q);"
         SQLLogger.info(sql)
         val ps = arm.manage(conn.prepareStatement(sql))
-        prepareNewHvActivity(new PSWrapper(ps),s)
+        prepareNewHvActivity(new PSWrapper(ps),s,user)
         ps.executeUpdate()
       }
     }
@@ -62,7 +62,9 @@ val EventColumns = Array[Column](
     RWColumn("description", DataType.String, 45),
     RWColumn("activity_type", DataType.String, 45),
     RWColumn("pre_reminder_day", DataType.String, 45),
-    RWColumn("post_reminder_day", DataType.String, 45)
+    RWColumn("post_reminder_day", DataType.String, 45),
+    RWColumn("Created_by", DataType.String, 45),
+    RWColumn("Created_date", DataType.Timestamp, 45)
     )
     
 val ActivityColumns = Array[Column](
@@ -72,28 +74,33 @@ val ActivityColumns = Array[Column](
     RWColumn("unit_no", DataType.String, 45),
     RWColumn("postal_code", DataType.String, 45),
     RWColumn("reg_date", DataType.Timestamp, 45),
-    RWColumn("hv_status", DataType.Timestamp, 45)
+    RWColumn("hv_status", DataType.Timestamp, 45),
+    RWColumn("Created_by", DataType.String, 45),
+    RWColumn("Created_date", DataType.Timestamp, 45)
     )
    
 
-def prepareNewEvent(ps: PSWrapper, s: Event) {
+def prepareNewEvent(ps: PSWrapper, s: Event, user:String) {
     val cols = EventColumns
     ps.setString(Column.constrain(cols(0),s.eventKey))
     ps.setString(Column.constrain(cols(1),s.rcCode))
-    ps.setString(Column.constrain(cols(1),s.div_code))
-    ps.setString(Column.constrain(cols(2),s.title))
-    ps.setString(Column.constrain(cols(3),s.date))
+    ps.setString(Column.constrain(cols(2),s.div_code))
+    ps.setString(Column.constrain(cols(3),s.title))
     ps.setString(Column.constrain(cols(4),s.date))
-    ps.setString(Column.constrain(cols(5),s.startTime))
-    ps.setString(Column.constrain(cols(6),s.endTime))
-    ps.setString(Column.constrain(cols(7),s.desc))
-    ps.setString(Column.constrain(cols(8),"house_visit"))
+    ps.setString(Column.constrain(cols(5),s.date))
+    ps.setString(Column.constrain(cols(6),s.startTime))
+    ps.setString(Column.constrain(cols(7),s.endTime))
+    ps.setString(Column.constrain(cols(8),s.desc))
+    ps.setString(Column.constrain(cols(9),"house_visit"))
    ps.setInt(s.pre_remind)
    ps.setInt(s.post_remind)
+   ps.setString(Column.constrain(cols(12),user))
+   ps.setString(Column.constrain(cols(13),formatTimestamp(nowTimestamp)))
+   
    
   }
 
-def prepareNewHvActivity(ps: PSWrapper, s: HvActivity) {
+def prepareNewHvActivity(ps: PSWrapper, s: HvActivity,user:String) {
     val cols = ActivityColumns
     ps.setString(Column.constrain(cols(0),s.eventKey))
     ps.setString(Column.constrain(cols(1),s.nric))
@@ -101,8 +108,14 @@ def prepareNewHvActivity(ps: PSWrapper, s: HvActivity) {
     ps.setString(Column.constrain(cols(3),s.unitNo))
     ps.setString(Column.constrain(cols(4),s.postalCode))
     ps.setString(Column.constrain(cols(5),s.regDate))
-    ps.setInt(7)
-   
+    if(s.hv_status==2){
+      ps.setInt(7)
+    }
+    else{
+      ps.setInt(s.hv_status)
+    }
+    ps.setString(Column.constrain(cols(7),user))
+    ps.setString(Column.constrain(cols(8),formatTimestamp(nowTimestamp)))
   }
 
   case class Event(
@@ -124,7 +137,8 @@ def prepareNewHvActivity(ps: PSWrapper, s: HvActivity) {
     floorNo: String,
     unitNo: String,
     postalCode:String,
-    regDate:String
+    regDate:String,
+    hv_status:Int
     
       )
 }
