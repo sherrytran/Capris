@@ -19,7 +19,7 @@ import net.capris.housevisit._
 
 
 object WebService {
-  CaprisDB.testInit
+  
 }
 
 class WebService extends Actor
@@ -36,6 +36,7 @@ class WebService extends Actor
   
   implicit val jsonFormats = DefaultFormats
   
+  CaprisDB.testInit
   
   post("/update/css-gcc-activity") {
     val body = request.bodyText
