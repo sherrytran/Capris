@@ -1,0 +1,24 @@
+---
+layout: default
+title:  Access Group Configuration
+---
+{% javascript_asset_tag group-config %}
+    - /_assets/group-configuration.js.coffee
+{% endjavascript_asset_tag %}
+<!-- Main component for a primary marketing message or call to action -->
+
+<div class="container">   
+  <h2>Access Group Configuration</h2>  
+  <div id="group-config-contents">
+  	 <form id="group-config-form">
+  	 	<table id='first-table' class='table table-responsive' style='width: 50%;'>
+  	 	</table>
+  	 </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+      $(document).ready(function() {
+        cp.groupconfig = new cp.GroupConfig()
+      });
+</script>

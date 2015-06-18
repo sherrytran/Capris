@@ -1,0 +1,34 @@
+---
+layout: default
+title: Edit User Profile
+---
+{% javascript_asset_tag edit-admin %}
+    - /_assets/edit-admin.js.coffee
+{% endjavascript_asset_tag %}
+<!-- Main component for a primary marketing message or call to action -->
+
+<div class="container">   
+  <h2>Edit User Profile</h2>  
+  <div id="edit-user-section-contents">
+  	<form id="edit-user-form">
+      <div class="row">
+      <div class="col-sm-3">
+        <table id='first-table' class='table table-responsive' >
+        </table>
+      </div>
+      <div class="col-sm-9">
+        <table id='second-table' class='table table-responsive' >
+        </table>
+      </div>
+      </div>
+  	 	
+  	 </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+      $(document).ready(function() {
+        cp.useredit = new cp.UserEdit()
+        cp.useredit.validate()
+      });
+</script>

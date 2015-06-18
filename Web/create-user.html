@@ -1,0 +1,25 @@
+---
+layout: default
+title: Create User Profile
+---
+{% javascript_asset_tag user-management %}
+    - /_assets/user-management.js.coffee
+{% endjavascript_asset_tag %}
+<!-- Main component for a primary marketing message or call to action -->
+
+<div class="container">   
+  <h2>Create User Profile</h2>  
+  <div id="create-user-section-contents">
+  	 <form id="create-user-form">
+  	 	<table id='first-table' class='table table-responsive' style='width: 50%;'>
+  	 	</table>
+  	 </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+      $(document).ready(function() {
+        cp.usermanagement = new cp.UserManagement()
+        cp.usermanagement.validate()
+      });
+</script>

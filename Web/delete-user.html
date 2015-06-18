@@ -1,0 +1,25 @@
+---
+layout: default
+title: Delete User Profile
+---
+{% javascript_asset_tag user-delete %}
+    - /_assets/delete-user.js.coffee
+{% endjavascript_asset_tag %}
+<!-- Main component for a primary marketing message or call to action -->
+
+<div class="container">   
+  <h2>Delete User Profile</h2>  
+  <div id="delete-user-section-contents">
+  	 <form id="delete-user-form">
+  	 	<table id='first-table' class='table table-responsive' style='width: 50%;'>
+  	 	</table>
+  	 </form>
+  </div>
+</div>
+
+<script type="text/javascript">
+      $(document).ready(function() {
+        cp.userdelete = new cp.UserDelete()
+        
+      });
+</script>

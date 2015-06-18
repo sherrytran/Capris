@@ -1,0 +1,46 @@
+---
+layout: default
+title: Edit User Profile
+---
+{% javascript_asset_tag edit-user %}
+    - /_assets/edit-user.js.coffee
+{% endjavascript_asset_tag %}
+<!-- Main component for a primary marketing message or call to action -->
+
+<div class="container">   
+  <h2>Edit User Profile</h2>  
+  <!--div id="edit-normal-user-section-contents"-->
+    <ul class='nav nav-tabs'>
+      <li class='nav active'>
+        <a href='#password' data-toggle='tab'>Change Password</a>
+      </li>
+      <li>
+        <a href='#email' data-toggle='tab'>Change Email</a>
+      </li>
+    </ul>
+    <div class='tab-content'>
+      <div class='tab-pane fade in active' id='password'>
+        <form id="password-form">
+          <table id='password-table' class='table table-responsive' style='width:50%'>
+          </table>
+        </form>
+      </div>
+      <div class='tab-pane fade' id='email'>
+        <form id="email-form">
+          <table id='email-table' class='table table-responsive' style='width:50%' >
+          </table>
+        </form>
+      </div>
+    </div>
+  	 
+
+  <!--/div-->
+</div>
+
+<script type="text/javascript">
+      $(document).ready(function() {
+        cp.useredit = new cp.UserEdit();
+        cp.useredit.validatePassForm();
+        cp.useredit.validateEmailForm();
+      });
+</script>
