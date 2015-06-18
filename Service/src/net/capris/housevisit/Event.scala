@@ -9,17 +9,21 @@ import net.capris.DAO._
 
 object Event extends DAO with LoggingHelper2 {
   
-def updateEvent(conn : Connection, s:Model.Event) {
+def updateEvent(conn : Connection, s : HvActivity,user:String) {
 	 ARM.run { arm =>
-        val nricArray= s.nric
-	      val q = nricArray.map(_=>"?").mkString(",")
-	      val sql = s"update f_citizen_address set hv_status=? where PersonIDNo in ($q) and hv_status=2;"
+        val nric= s.nric
+        val postal = s.postalCode
+        val regDate = s.regDate
+	      //val q = nricArray.map(_=>"?").mkString(",")
+	      val sql = s"update f_citizen_address set hv_status=?,Modified_By=?,Modified_Date=? where PersonIDNo=? and hv_status=2 and postal_code=? and reg_date=?;"
 	      SQLLogger.info(sql)
 	      val ps = arm.manage(conn.prepareStatement(sql))
 	      ps.setString(1,"7")
-	      for(i <- 0 until nricArray.length){
-        	ps.setString(i+2,nricArray(i))
-	      }
+        ps.setString(2,user)
+        ps.setString(3,formatTimestamp(nowTimestamp))
+        ps.setString(4,nric)
+        ps.setString(5,postal)
+        ps.setString(6,regDate)
 	      ps.executeUpdate()
 	    }
 }

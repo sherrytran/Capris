@@ -387,6 +387,20 @@ class ChitChatSection
         console.info(errorThrown)
     })
 
+urlPath:(div)->
+  div=@levelSelect.val()
+  groups = elx.parameters.groups
+  for group in groups.split(" ")
+    if group.indexOf("cgd-")>-1
+      parts = group.split("-")
+      if(parts[3])
+        if(parts[3].indexOf(div)>-1)
+          dis = parts[1]+"/"
+          grc= parts[2]+"/"
+          div= @levelSelect.val()
+          break
+  url="#{dis}#{grc}#{div}"
+  url
 
 class BasicInfo
   constructor:(@cs_code,@div_code,@rc_code,@adviser,@venue,@faci,@tour,@phase1_date,@phase2_date,@remark)->

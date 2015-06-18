@@ -29,7 +29,7 @@ def load(div : String) : Array[Term] = {
     }
   }
 
-def updateExcel(s:CCCTermDAO.CCCTermDetail):LogMessage= {
+def updateExcel(s:CCCTermDAO.CCCTermDetail,user:String):LogMessage= {
    ARM.run { arm =>
         val conn = arm.manage(CaprisDB.getConnection)
         conn.setAutoCommit(false)
@@ -38,15 +38,17 @@ def updateExcel(s:CCCTermDAO.CCCTermDetail):LogMessage= {
         val start=s.term_start_date
         val end=s.term_end_date
         val remark = s.div_remark
-        val sql = s"update c_ccc_term set div_status='Pending',hq_status='Waiting HQ',appointment_excel_url=? , div_remark=? where div_code=? and term_start_date=? and term_end_date=?;"
+        val sql = s"update c_ccc_term set div_status='Pending',hq_status='Waiting HQ',appointment_excel_url=? , div_remark=?,Modified_By=?,Modified_Date=? where div_code=? and term_start_date=? and term_end_date=?;"
         SQLLogger.info(sql)
         try {
           val ps = arm.manage(conn.prepareStatement(sql))
           ps.setString(1,excelUrl)
           ps.setString(2,remark)
-          ps.setString(3,div)
-          ps.setString(4,start)
-          ps.setString(5,end)
+          ps.setString(3,user)
+          ps.setString(4,formatTimestamp(nowTimestamp))
+          ps.setString(5,div)
+          ps.setString(6,start)
+          ps.setString(7,end)
           ps.executeUpdate()
           conn.commit
           LogMessage.None

@@ -19,6 +19,7 @@ import net.capris.housevisit._
 
 
 object WebService {
+  CaprisDB.testInit
 }
 
 class WebService extends Actor
@@ -34,7 +35,7 @@ class WebService extends Actor
   implicit val exeCxt = context.dispatcher
   
   implicit val jsonFormats = DefaultFormats
-  CaprisDB.testInit
+  
   
   post("/update/css-gcc-activity") {
     val body = request.bodyText
@@ -94,8 +95,8 @@ class WebService extends Actor
     log.info(body)
     val activity = JsonParser.parse(body).extract[ChitChatActivity.Details]
     log.info(activity)
-    val creds = Authentication.credentials
-    ChitChatActivity.insertChitChatDetail(activity) match {
+    val user = Authentication.username
+    ChitChatActivity.insertChitChatDetail(activity,user) match {
         case LogMessage.None => 
           log.info("Updated chit chat activity successfully")
           Future(OkResponse)
@@ -110,8 +111,8 @@ class WebService extends Actor
     log.info(body)
     val term = JsonParser.parse(body).extract[CCCTermDAO.CCCTermDetail]
     log.info(term)
-    val creds = Authentication.credentials
-    CCCTermDAO.updateExcel(term) match {
+    val user = Authentication.username()
+    CCCTermDAO.updateExcel(term,user) match {
         case LogMessage.None => 
           log.info("Updated ccc term successfully")
           Future(OkResponse)
@@ -181,6 +182,21 @@ class WebService extends Actor
           Future(OkResponse)
         case msg => 
           Future{ErrorResponse(400,msg.toString)}
+      }
+    
+  }
+  
+  post("/update/print-letter-status") {
+    val body = request.bodyText
+    log.info(body)
+    val info = JsonParser.parse(body).extract[WelcomeLetterDAO.PeopleInfoList]
+    log.info(info)
+    WelcomeLetterDAO.UpdateWelcomeLetter(info) match {
+        case LogMessage.None => 
+          log.info("Updated ccc term successfully")
+          Future(OkResponse)
+        case msg => 
+          Future(ErrorResponse(400,msg.toString))
       }
     
   }

@@ -34,7 +34,7 @@ class Announcements
     #$("<tr><th>Repeat</th><td><input id='repeat' type='checkbox'></td>").appendTo(@table)
     $("<tr><th>Repeat Frequency: </th><td><select id='frequency' class='form-control input-sm'></td>").appendTo(@table)
     $("<option value='None'>None</option><option value='Daily'>Daily</option><option value='Monthly'>Monthly</option><option value='Yearly'>Yearly</option>").appendTo($("#frequency"))
-    @submit=$("<button>Submit</button>").appendTo(@table)
+    @submit=$("<button class='btn btn-primary'>Submit</button>").appendTo(@table)
     $("#startdate").datepicker({dateFormat:'dd/mm/yy'})
     $("#enddate").datepicker({dateFormat:'dd/mm/yy'})
     @submit.click (e) =>
@@ -43,7 +43,6 @@ class Announcements
         @test()
 
   test: ()=>
-    console.info("click")
     @onSave(@result)
 
   onSave: (andThen)->
@@ -58,7 +57,6 @@ class Announcements
     #recur=$("#repeat").is(':checked')
     repeat_frequency = $("#frequency").val()
     item= new AnnouncementItem(title,desc,convertStart,convertEnd,true,repeat_frequency)
-    console.info(item)
     postURL = cp.buildSafeUrl("/adhoc/web/update/announcement")
     $.ajax({
       type: 'post'
@@ -67,14 +65,9 @@ class Announcements
       data: JSON.stringify(item)
       success: andThen
       error: (jqXHR, textStatus, errorThrown) =>
-        console.info(textStatus)
-        console.info(jqXHR)
         msg = jqXHR.responseText
         if msg.indexOf("Duplicate")>-1
           alert("Your title has already existed")
-        console.info(errorThrown)
-
-
     })
 
   validate:()=>
@@ -113,8 +106,7 @@ class Announcements
     })
 
   result: ()=>
-    console.info("done")
-    alert("Saved Successfully")
+    alert("Submit Successfully")
 
 class AnnouncementItem
   constructor: (@title,@description,@start_date,@end_date,@recur,@repeat_frequency) ->

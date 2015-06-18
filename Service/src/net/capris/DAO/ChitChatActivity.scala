@@ -28,7 +28,7 @@ def load(div : String) : Array[Location] = {
     }
   }
 
-def insertChitChatDetail(s : Details) : LogMessage = {
+def insertChitChatDetail(s : Details, user:String) : LogMessage = {
       ARM.run { arm =>
         val conn = arm.manage(CaprisDB.getConnection)
         conn.setAutoCommit(false)
@@ -39,12 +39,12 @@ def insertChitChatDetail(s : Details) : LogMessage = {
         SQLLogger.info(sql)
         try {
           val ps = arm.manage(conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS))
-          prepareNewEvent(new PSWrapper(ps),s)
+          prepareNewEvent(new PSWrapper(ps),s,user)
           ps.executeUpdate()
           val key = ps.getGeneratedKeys()
           if(key.next()){
             val keyID = key.getLong(1)
-            insertChitChatActivity(s.basic.head,conn,keyID)
+            insertChitChatActivity(s.basic.head,conn,keyID,user)
             conn.commit() 
           }
           else {
@@ -61,7 +61,7 @@ def insertChitChatDetail(s : Details) : LogMessage = {
       LogMessage.None
     }
 
-def insertChitChatActivity(s : ActivityDetail, conn : Connection, key:Long) {
+def insertChitChatActivity(s : ActivityDetail, conn : Connection, key:Long,user:String) {
       ARM.run { arm =>
         val cols = ActivityColumns.map(_.name)
         val attrs = cols.mkString(",")
@@ -69,7 +69,7 @@ def insertChitChatActivity(s : ActivityDetail, conn : Connection, key:Long) {
         val sql = s"INSERT INTO f_activity ($attrs) VALUES($q);"
         SQLLogger.info(sql)
         val ps = arm.manage(conn.prepareStatement(sql))
-        prepareNewActivity(new PSWrapper(ps),s,key)
+        prepareNewActivity(new PSWrapper(ps),s,key,user)
         ps.executeUpdate()
         } 
     }
@@ -114,7 +114,9 @@ val ChitChatColumns = Array[Column](
     RWColumn("ethnic_malay_participated", DataType.String, 45),
     RWColumn("ethnic_indian_participated", DataType.String, 45),
     RWColumn("ethnic_other_participated", DataType.String, 45),
-    RWColumn("supporting_document_url", DataType.String, 1000)
+    RWColumn("supporting_document_url", DataType.String, 1000),
+    RWColumn("Created_by", DataType.String, 45),
+    RWColumn("Created_date", DataType.Timestamp, 45)
     )
 
 val ActivityColumns = Array[Column](
@@ -123,10 +125,13 @@ val ActivityColumns = Array[Column](
     RWColumn("div_code", DataType.String, 45),
     RWColumn("start_date", DataType.Timestamp, 45),
     RWColumn("end_date", DataType.Timestamp, 45),
-    RWColumn("activity_type", DataType.String, 45)
+    RWColumn("activity_type", DataType.String, 45),
+    RWColumn("Created_by", DataType.String, 45),
+    RWColumn("Created_date", DataType.Timestamp, 45)
+    
     )
     
-def prepareNewActivity(ps: PSWrapper, s: ActivityDetail, key:Long) {
+def prepareNewActivity(ps: PSWrapper, s: ActivityDetail, key:Long,user:String) {
     val cols = ActivityColumns
     ps.setLong(key)
     ps.setString(Column.constrain(cols(1),s.rc_code))
@@ -134,9 +139,11 @@ def prepareNewActivity(ps: PSWrapper, s: ActivityDetail, key:Long) {
     ps.setString(Column.constrain(cols(3),s.phase1_date))
     ps.setString(Column.constrain(cols(4),s.phase2_date))
     ps.setString(Column.constrain(cols(5),"chit_chat"))
+    ps.setString(Column.constrain(cols(6),user))
+    ps.setString(Column.constrain(cols(7),formatTimestamp(nowTimestamp)))
   }
 
-def prepareNewEvent(ps: PSWrapper,g:ChitChatActivity.Details) {
+def prepareNewEvent(ps: PSWrapper,g:ChitChatActivity.Details,user:String) {
     val cols = ChitChatColumns
     val s=g.basic.head
     val e=g.number.head
@@ -165,6 +172,8 @@ def prepareNewEvent(ps: PSWrapper,g:ChitChatActivity.Details) {
     ps.setInt(e.et_indian_part)
     ps.setInt(e.et_other_part)
     ps.setString(Column.constrain(cols(24),e.url))
+    ps.setString(Column.constrain(cols(25),user))
+    ps.setString(Column.constrain(cols(26),formatTimestamp(nowTimestamp)))
   }
 
 

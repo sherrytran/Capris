@@ -33,6 +33,7 @@ object HouseVisit extends LoggingHelper2 {
     var activityItem = new Event.HvActivity(key,item.nric,item.floorNo,item.unitNo,item.postalCode,item.reg_date,item.hv_status)
     log.info(activityItem)
     Event.insertHvActivity(conn, activityItem,user)
+    Event.updateEvent(conn,activityItem,user) 
     LogMessage.None
 
   }
@@ -42,7 +43,7 @@ object HouseVisit extends LoggingHelper2 {
     var eventItem = new Event.Event(s.title,s.date,s.startTime,s.endTime,s.desc,key,s.divCode,s.rcCode, s.preRemind, s.postRemind)
     log.info(eventItem)
     Event.insertEvent(conn,eventItem,user)
-    Event.updateEvent(conn,s)    
+       
     LogMessage.None
 
 }
